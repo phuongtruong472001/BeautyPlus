@@ -1,0 +1,33 @@
+body {
+    background-color: rgb(195, 176, 230);
+}
+
+.container {
+    font-family: arial;
+    width: 500px;
+    height: 200px;
+    outline: dashed 1px black;
+    /* Setup */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(138, 203, 203);
+}
+
+form {
+    padding-top: 10%;
+    padding-left: 10%;
+}
+
+input {
+    position: absolute;
+    /* Canh giữa */
+    left: 70%;
+    transform: translate(-70%);
+
+}
+
+ .dn {
+    margin-left: 100px;
+}
