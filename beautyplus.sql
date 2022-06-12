@@ -77,3 +77,10 @@ create table image(
     foreign key (product_id) references product(id) on delete cascade,
     foreign key (user_id) references user(id) on delete cascade
 );
+
+create table cart(
+	user_id int not null,
+    product_id int not null,
+    quantity int,
+    primary key (user_id, product_id)
+);
