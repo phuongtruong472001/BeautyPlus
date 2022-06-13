@@ -41,7 +41,7 @@ create table product(
     price int,
     sold int,
     disscount int,
-	branch varchar(100),
+	brand varchar(100),
     category_id int,
     created datetime default current_timestamp,
     updated datetime default current_timestamp on update current_timestamp,
