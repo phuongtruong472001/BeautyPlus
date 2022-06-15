@@ -1,0 +1,99 @@
+@import url('./css/base/base.css');
+@import url('./css/base/table.css');
+@import url('./css/layout/navbar.css');
+@import url('./css/layout/header.css');
+@import url('./css/base/scroll-barr.css');
+@import url('./css/layout/content.css');
+@import url('./css/base/button.css');
+@import url('./css/base/input.css');
+@import url('./css/base/dialouge.css');
+
+body{
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+}
+
+.container{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color:#eceef1 ;
+}
+
+.container .main{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+.title-distance{
+    width: 90%;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.title-distance .title{
+    font-family: NOTOSAN BOLD;
+    font-size: 24px;
+}
+
+.add-new-employee{
+    display: flex;
+    height: 36px;
+}
+
+.add-new-employee .btn-add{
+    background-color: #2ca01c;
+   width: 74px;
+   color: white;
+   border-radius: 30px 0 0 30px;
+   font-family: NOTOSAN REGULAR;
+   font-size: 14px;
+}
+
+.add-new-employee .import-from-excel{
+    background-color: #2ca01c;
+    width: 46px;
+    color: white;
+    border-radius: 0 30px 30px 0;
+}
+
+.add-new-employee .btn-add:hover,
+.import-from-excel:hover{
+    cursor: pointer;
+    background-color: #35bf22;
+}
+
+.btn-space{
+    background-color: #2ca01c;
+    width: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-space div{
+    background-color: white;
+    height: 18px;
+    width: 100%;
+}
+
+.add-new-employee .import-from-excel div{
+    background-image: url('./assets/img/icons.svg');
+    background-position: -848px -359px;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+}
+
+
+
+
+

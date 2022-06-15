@@ -1,0 +1,147 @@
+.m-dialogue {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+
+
+.add-emoloyee-form {
+    width: 900px;
+    background-color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* header */
+.m-form-header {
+    height: 73px;
+    display: flex;
+    padding: 0 0 0 32px;
+}
+
+
+.m-dialogue-header {
+    height: 73px;
+    display: flex;
+    padding: 0 0 0 32px;
+
+}
+
+.m-form-menu {
+    width: 822px;
+    height: 100%;
+}
+
+.m-form-close {
+    height: 100%;
+    width: 78px;
+    padding: 12px;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.md-close,
+.md-help {
+    width: 100%;
+    height: 100%;
+}
+
+.md-close-icon,
+.md-help-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url(https://actappg1.misacdn.net/img/Sprites.76835d17.svg);
+}
+
+
+.md-help-icon {
+    background-position: -89px -144px;
+}
+
+.md-close-icon {
+    margin-left: 5px;
+    background-position: -144px -144px;
+}
+
+.m-form-menu {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-family: NOTOSAN BOLD;
+}
+
+
+
+.m-form-content{
+    padding: 0px 32px;
+}
+
+
+.m-form-content textarea{
+    height: 250px;
+    width: 100%;
+}
+
+.m-news-input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    font-family: NOTOSAN SEMIBOLD;
+    font-size: 13px;
+}
+.m-news-input textarea,
+.m-news-input input {
+    border-radius: 2px;
+    padding: 5px 10px;
+    outline: none;
+    border: 1px solid #b8bcc3;
+    font-family: NOTOSAN REGULAR;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+.m-news-input label{
+    padding-bottom: 8px;
+}
+
+.m-news-input input:focus,
+.m-news-input textarea:focus{
+    border: 1px solid green;
+}
+.m-form-action{
+    padding: 32px;
+    justify-content: space-between;
+}
+.m-form-action,
+.m-form-action div{
+    display: flex;
+}
+
+.m-form-action button{
+    font-family: NPTOSAN BOLD;
+    text-transform: capitalize;
+    padding: 8px 20px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.m-news-save,
+.m-news-cancel{
+    color: black;
+}
+
+.m-news-update,
+.m-news-save-and-add{
+    background-color: #2ca01c;
+    border-color: #2ca01c !important;
+    margin-left: 10px;
+    color: white;
+}
