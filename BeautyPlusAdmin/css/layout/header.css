@@ -1,0 +1,115 @@
+.header {
+    height: 48px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+
+}
+
+.h-bars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    
+}
+
+.h-bars div {
+    background-image: url('./../../assets/img/icons.svg');
+    background-position: -843px -30px;
+    width: 24px;
+    height: 24px;
+}
+
+.h-bars:hover {
+    cursor: pointer;
+}
+
+.h-brands {
+    max-width: 235px;
+    height: 48px;
+    display: flex;
+    justify-content: left;
+    padding-left: 9px;
+    padding-right: 10px;
+}
+
+.h-brand-name {
+    max-width: 198px;
+    font-family: NOTOSAN SEMIBOLD;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+
+}
+
+.h-brand-name p {
+    margin: 0px;
+}
+
+.h-brands .h-dropdown {
+    margin-left: 9px;
+    display: flex;
+    align-self: center;
+
+}
+.icon-download-process,
+.h-brands .h-dropdown:hover {
+    cursor: pointer;
+}
+
+.h-dropdown div {
+    background-image: url('./../../assets/img/icons.svg');
+    background-position: -80px -360px;
+    width: 14px;
+    transform: rotate(90deg);
+    height: 14px;
+}
+
+.h-current-db {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ebedf0;
+    padding: 0 12px;
+    border-radius: 40px;
+    margin-left: 15px;
+    font-size: 13px;
+    cursor: pointer;
+    height: 30px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    
+}
+
+.icon-header-current-db{
+    
+    width: 6px;
+    height: 6px;
+    background-color: #4ea344;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+.header-current-db-name{
+    padding-left: 7px;
+    max-width: 80px;
+    font-size: 13px ;
+    font-family: NOTOSAN REGULAR;
+}
+
+.icon-download-process{
+    background-image: url('https://actappg1.misacdn.net/img/Sprites.76835d17.svg');
+    background-position: -2144px -200px;
+    width: 24px;
+    height: 24px;
+    margin-left: 24px;
+    
+}
+.icon-download-process:hover{
+   
+    background-position: -2048px -200px;
+   
+}
+
+.h-search{
+    padding-left: 32px;
+}

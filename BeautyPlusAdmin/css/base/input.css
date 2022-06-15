@@ -1,0 +1,40 @@
+.m-input {
+    font-family: NOTOSAN REGULAR;
+    outline: none;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 3px;
+    color: #111;
+    border: 1px solid #ebedf0;
+    padding: 5px 12px 5px 10px;
+}
+
+.m-input::placeholder {
+    color: #bbb;
+    font-family: NOTOSAN ITALIC;
+}
+
+.m-input:hover {
+    border: 2px solid #ebedf0;
+}
+
+
+
+
+.m-icon-input{
+    position: relative;
+}
+.m-icon-input input{
+    padding-right: 32px;
+    
+}
+.m-icon-input div {
+    position: absolute;
+    background-image: url('./../../assets/img/icons.svg');
+    background-position: -992px -360px;
+    width: 16px;
+    height: 16px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
