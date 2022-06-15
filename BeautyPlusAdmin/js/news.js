@@ -186,12 +186,12 @@ class NEWS {
                 for (let i = 0; i < inputs.length; i++) {
                     const input = inputs[i];
                     $(input).val(e[$(input).attr("propName")]);
-
                 }
                 $('.m-dialogue').show();
              
                 var row=e;
                 $('.m-news-update').click(function () {
+                    
                     const resp = row;
                     inputs = $(".m-dialogue [propName]")
                     for (let i = 0; i < inputs.length; i++) {
@@ -199,13 +199,13 @@ class NEWS {
                         resp[$(input).attr("propName")] = $(input).val();
                         console.log($(input).val());
                     }
-                    console.log("Trước khi sửa","response", resp);
+                    
                     $.ajax({
                         type: "POST",
                         url: "./api/news/update-by-id.php",
                         data: resp,
                         success: function (response) {
-                            console.log("Test chức năng sửa",response,resp);
+                            
                             if (response) {
                                 window.alert("Sửa thành công!");
                                 $('.m-dialogue').hide();

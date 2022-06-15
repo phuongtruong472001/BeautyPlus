@@ -65,6 +65,12 @@
 .sticky-table thead th:first-child {
     position: sticky;
     left: 0;
+    top:0;
+   
+    
+}
+.sticky-table thead th:first-child{
+    z-index: 20;
 }
 
 .sticky-table tbody td:last-child,
