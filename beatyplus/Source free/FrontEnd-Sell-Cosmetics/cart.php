@@ -54,52 +54,52 @@
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
+                    <?php
+                    include(".\assets\php\connect.php");
+                    $conn = mysqli_connect($host, $username, $password, $dbname);
+                    $sql = "select * from cart";
+                    $result = $conn->query($sql);
+
+                    ?>
                     <i class="fas fa-shopping-basket"></i>
                     <div class="header__cart-amount">
-                        3
+                        <?php echo $result->num_rows ?>
                     </div>
                     <div class="header__cart-wrap">
                         <ul class="order__list">
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql = "select * from cart ";
+                            $result = $conn->query($sql);
+                            $sum=0;
+                            while ($row = $result->fetch_assoc()) {
+                                $ID = $row['product_id'];
+                                $sql1 = "select * from cart inner join product where id=$ID";
+                                $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_assoc();
+                                $ThanhTien = $row['quantity'] * $row1['price'];
+                                $sum+=$ThanhTien;
+                            ?>
+                                <li class="item-order">
+                                    <div class="order-wrap">
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                            <img src="./assets/img/product/product1.jpg" alt="">
+                                        </a>
+                                        <div class="order-main">
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                        </div>
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                     </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
+
+                                </li>
+                            <?php } ?>
+
                         </ul>
-                        <div class="total-money">Tổng cộng: 120.000đ</div>
-                        <a href="cart.html" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.html" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        <div class="total-money">Tổng cộng: <?php echo number_format($sum)?> đ</div>
+                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
                         <!-- norcart -->
                         <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
                     </div>
@@ -129,7 +129,7 @@
                     </ul>
                 </li>
                 <li class="header__nav-item index">
-                    <a href="index.html" class="header__nav-link">Trang chủ</a>
+                    <a href="index.php" class="header__nav-link">Trang chủ</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="#" class="header__nav-link">Giới Thiệu</a>
@@ -138,89 +138,24 @@
                     <a href="#" class="header__nav-link">Sản Phẩm</a>
                     <div class="sub-nav-wrap grid wide">
                         <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql1 = " select * from category";
+                            $result = $conn->query($sql1);
+                            while ($row = $result->fetch_assoc()) { ?>
+
+                                <li class="sub-nav__item">
+                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                </li>
+
+                            <?php } ?>
                         </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
+
                     </div>
                 </li>
                 <li class="header__nav-item">
-                    <a href="news.html" class="header__nav-link">Tin Tức</a>
+                    <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="contact.html" class="header__nav-link">Liên Hệ</a>
@@ -249,91 +184,48 @@
                             <div class="col l-1 m-1 s-0">Xóa</div>
                         </div>
                         <div class="row item">
-                            <div class="col l-1 m-1 s-0">
-                                <input type="checkbox" name="a">
-                            </div>
-                            <div class="col l-4 m-4 s-8">
-                                <div class="main__cart-product">
-                                    <img src="./assets/img/product/product2.jpg" alt="">
-                                    <div class="name">Azrouel dress variable Azrouel dress variable</div>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql = "select * from cart ";
+                            $result = $conn->query($sql);
+                            $sum=0;
+                            while ($row = $result->fetch_assoc()) {
+                                $ID = $row['product_id'];
+                                $sql1 = "select * from cart inner join product where id=$ID";
+                                $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_assoc();
+                                $ThanhTien = $row['quantity'] * $row1['price'];
+                                $sum+=$ThanhTien;
+                            ?>
+                                <div class="col l-1 m-1 s-0">
+                                    <input type="checkbox" name="a">
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="buttons_added">
-                                    <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                    <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="1">
-                                    <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                <div class="col l-4  m-4 s-8">
+                                    <div class="main__cart-product">
+                                        <img src="./assets/img/product/product2.jpg" alt="">
+                                        <div class="name"><?php echo $row1["name"] ?></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-4">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-1 m-1 s-0">
-                                <span class="main__cart-icon">
-                                <i class="far fa-times-circle "></i>
-                            </span>
-                            </div>
-                        </div>
-                        <div class="row item">
-                            <div class="col l-1 m-1 s-0">
-                                <input type="checkbox" name="a">
-                            </div>
-                            <div class="col l-4 m-4 s-8">
-                                <div class="main__cart-product">
-                                    <img src="./assets/img/product/product2.jpg" alt="">
-                                    <div class="name">Azrouel dress variable Azrouel dress variable</div>
+                                <div class="col l-2 m-2 s-0">
+                                    <div class="main__cart-price"><?php echo number_format($row1["price"]) ?></div>
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="buttons_added">
-                                    <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                    <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="1">
-                                    <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                <div class="col l-2 m-2 s-0">
+                                    <div class="buttons_added">
+                                        <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
+                                        <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
+                                        <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                    </div>
+                                <?php } ?>
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-4">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-1 m-1 s-0">
-                                <span class="main__cart-icon">
-                                <i class="far fa-times-circle "></i>
-                            </span>
-                            </div>
-                        </div>
-                        <div class="row item">
-                            <div class="col l-1 m-1 s-0">
-                                <input type="checkbox" name="a">
-                            </div>
-                            <div class="col l-4 m-4 s-8">
-                                <div class="main__cart-product">
-                                    <img src="./assets/img/product/product2.jpg" alt="">
-                                    <div class="name">Azrouel dress variable Azrouel dress variable</div>
+                                <div class="col l-2 m-2 s-4">
+                                    <div class="main__cart-price"> <?php echo number_format($ThanhTien) ?> đ</div>
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-2 m-2 s-0">
-                                <div class="buttons_added">
-                                    <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                    <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="1">
-                                    <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                <div class="col l-1 m-1 s-0">
+                                    <span class="main__cart-icon">
+                                        <i class="far fa-times-circle "></i>
+                                    </span>
                                 </div>
-                            </div>
-                            <div class="col l-2 m-2 s-4">
-                                <div class="main__cart-price">476.000 đ</div>
-                            </div>
-                            <div class="col l-1 m-1 s-0">
-                                <span class="main__cart-icon">
-                                <i class="far fa-times-circle "></i>
-                            </span>
-                            </div>
                         </div>
                         <div class="btn btn--default">
                             Cập nhật giỏ hàng
@@ -347,7 +239,7 @@
                             <div class="main__pay-text">
                                 Tổng phụ</div>
                             <div class="main__pay-price">
-                                1,120,000 ₫
+                            <?php echo number_format($sum) ?> ₫
                             </div>
                         </div>
                         <div class="pay-info">
@@ -363,7 +255,7 @@
                             <div class="main__pay-text">
                                 Tổng thành tiền</div>
                             <div class="main__pay-price">
-                                1,120,000 ₫
+                            <?php echo number_format($sum) ?> ₫
                             </div>
                         </div>
                         <div class="btn btn--default orange">Tiến hành thanh toán</div>
@@ -420,8 +312,8 @@
                     <ul class="footer__list">
                         <li class="footer__item">
                             <span class="footer__text">
-                                    <i class="fas fa-map-marked-alt"></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
-                                </span>
+                                <i class="fas fa-map-marked-alt"></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
+                            </span>
                         </li>
                         <li class="footer__item">
                             <a href="#" class="footer__link">
@@ -436,15 +328,15 @@
                         <li class="footer__item">
                             <div class="social-group">
                                 <a href="#" class="social-item"><i class="fab fa-facebook-f"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-twitter"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-pinterest-p"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-invision"></i>
-                                    </a>
-                                <a href="#" class="social-item"><i class="fab fa-youtube"></i>  
-                                    </a>
+                                </a>
+                                <a href="#" class="social-item"><i class="fab fa-youtube"></i>
+                                </a>
                             </div>
                         </li>
                     </ul>

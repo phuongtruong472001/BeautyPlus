@@ -54,52 +54,51 @@
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
+                    <?php
+                    include(".\assets\php\connect.php");
+                    $conn = mysqli_connect($host, $username, $password, $dbname);
+                    $sql = "select * from cart";
+                    $result = $conn->query($sql);
+
+                    ?>
                     <i class="fas fa-shopping-basket"></i>
                     <div class="header__cart-amount">
-                        3
+                        <?php echo $result->num_rows ?>
                     </div>
                     <div class="header__cart-wrap">
                         <ul class="order__list">
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql = "select * from cart ";
+                            $result = $conn->query($sql);
+                            $sum = 0;
+                            while ($row = $result->fetch_assoc()) {
+                                $ID = $row['product_id'];
+                                $sql1 = "select * from cart inner join product where id=$ID";
+                                $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_assoc();
+                                $ThanhTien = $row['quantity'] * $row1['price'];
+                                $sum += $ThanhTien;
+                            ?>
+                                <li class="item-order">
+                                    <div class="order-wrap">
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                            <img src="./assets/img/product/product1.jpg" alt="">
+                                        </a>
+                                        <div class="order-main">
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                        </div>
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                     </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
+
+                                </li>
+                            <?php } ?>
                         </ul>
-                        <div class="total-money">Tổng cộng: 120.000đ</div>
-                        <a href="cart.html" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.html" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        <div class="total-money">Tổng cộng: <?php echo number_format($ThanhTien) ?> đ</div>
+                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
                         <!-- norcart -->
                         <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
                     </div>
@@ -129,98 +128,33 @@
                     </ul>
                 </li>
                 <li class="header__nav-item index">
-                    <a href="index.html" class="header__nav-link">Trang chủ</a>
+                    <a href="index.php" class="header__nav-link">Trang chủ</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="#" class="header__nav-link">Giới Thiệu</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="#" class="header__nav-link">Sản Phẩm</a>
+                    <a href="listProduct.php" class="header__nav-link">Sản Phẩm</a>
                     <div class="sub-nav-wrap grid wide">
                         <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql1 = " select * from category";
+                            $result = $conn->query($sql1);
+                            while ($row = $result->fetch_assoc()) { ?>
+
+                                <li class="sub-nav__item">
+                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                </li>
+
+                            <?php } ?>
                         </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
+
                     </div>
                 </li>
                 <li class="header__nav-item">
-                    <a href="news.html" class="header__nav-link">Tin Tức</a>
+                    <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="contact.html" class="header__nav-link">Liên Hệ</a>
@@ -249,7 +183,7 @@
                         <a href="#" class="new-item__title">
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                       </a>
+                        </a>
                         <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
                         <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
                             vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
@@ -268,7 +202,7 @@
                         <a href="#" class="new-item__title">
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                       </a>
+                        </a>
                         <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
                         <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
                             vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
@@ -287,7 +221,7 @@
                         <a href="#" class="new-item__title">
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                       </a>
+                        </a>
                         <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
                         <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
                             vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
@@ -306,7 +240,7 @@
                         <a href="#" class="new-item__title">
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                       </a>
+                        </a>
                         <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
                         <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
                             vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
@@ -325,7 +259,7 @@
                         <a href="#" class="new-item__title">
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
                             Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                       </a>
+                        </a>
                         <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
                         <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
                             vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
@@ -406,7 +340,7 @@
                                     </a>
                                     <a href="#" class="social-item"><i class="fab fa-invision"></i>
                                     </a>
-                                    <a href="#" class="social-item"><i class="fab fa-youtube"></i>  
+                                    <a href="#" class="social-item"><i class="fab fa-youtube"></i>
                                     </a>
                                 </div>
                             </li>

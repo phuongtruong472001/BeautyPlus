@@ -31,6 +31,9 @@
 </head>
 
 <body>
+    <?php
+    include("category.php");
+    ?>
     <div class="header scrolling" id="myHeader">
         <div class="grid wide">
             <div class="header__top">
@@ -56,52 +59,51 @@
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
+                    <?php
+                    include(".\assets\php\connect.php");
+                    $conn = mysqli_connect($host, $username, $password, $dbname);
+                    $sql = "select * from cart";
+                    $result = $conn->query($sql);
+
+                    ?>
                     <i class="fas fa-shopping-basket"></i>
                     <div class="header__cart-amount">
-                        3
+                        <?php echo $result->num_rows ?>
                     </div>
                     <div class="header__cart-wrap">
                         <ul class="order__list">
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql = "select * from cart ";
+                            $result = $conn->query($sql);
+                            $sum=0;
+                            while ($row = $result->fetch_assoc()) {
+                                $ID = $row['product_id'];
+                                $sql1 = "select * from cart inner join product where id=$ID";
+                                $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_assoc();
+                                $ThanhTien = $row['quantity'] * $row1['price'];
+                                $sum+=$ThanhTien;
+                            ?>
+                                <li class="item-order">
+                                    <div class="order-wrap">
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                            <img src="./assets/img/product/product1.jpg" alt="">
+                                        </a>
+                                        <div class="order-main">
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                        </div>
+                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                     </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
+
+                                </li>
+                            <?php } ?>
                         </ul>
-                        <div class="total-money">Tổng cộng: 120.000đ</div>
-                        <a href="cart.html" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.html" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        <div class="total-money">Tổng cộng: <?php echo number_format($ThanhTien) ?> đ</div>
+                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
                         <!-- norcart -->
                         <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
                     </div>
@@ -131,7 +133,7 @@
                     </ul>
                 </li>
                 <li class="header__nav-item index">
-                    <a href="index.html" class="header__nav-link">Trang chủ</a>
+                    <a href="index.php" class="header__nav-link">Trang chủ</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="#" class="header__nav-link">Giới Thiệu</a>
@@ -140,89 +142,23 @@
                     <a href="#" class="header__nav-link">Sản Phẩm</a>
                     <div class="sub-nav-wrap grid wide">
                         <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $conn = mysqli_connect($host, $username, $password, $dbname);
+                            $sql1 = " select * from category";
+                            $result = $conn->query($sql1);
+                            while ($row = $result->fetch_assoc()) { ?>
+
+                                <li class="sub-nav__item">
+                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                </li>
+
+                            <?php } ?>
                         </ul>
                     </div>
                 </li>
                 <li class="header__nav-item">
-                    <a href="news.html" class="header__nav-link">Tin Tức</a>
+                    <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
                     <a href="contact.html" class="header__nav-link">Liên Hệ</a>
@@ -235,42 +171,50 @@
             <div class="productInfo">
                 <div class="row">
                     <div class="col l-5 m-12 s-12">
-                        <div class="owl-carousel owl-theme" id="sync1">
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product2.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product3.jpg)">
-                                </div>
-                            </a>
-                        </div>
-                        <div class="owl-carousel owl-theme" id="sync2">
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product2.jpg)">
-                                </div>
-                            </a>
-                            <a href="#" class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product3.jpg)">
-                                </div>
-                            </a>
-                        </div>
+                        <?php
+                        include(".\assets\php\connect.php");
+                        $conn = mysqli_connect($host, $username, $password, $dbname);
+                        $ID = $_GET["id"];
+                        $sql = "select * from product where ID=$ID";
+                        $result = $conn->query($sql);
+                        while ($row = $result->fetch_assoc()) { ?>
+                            ?>
+                            <div class="owl-carousel owl-theme" id="sync1">
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product2.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product3.jpg)">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="owl-carousel owl-theme" id="sync2">
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product2.jpg)">
+                                    </div>
+                                </a>
+                                <a href="#" class="product">
+                                    <div class="product__avt" style="background-image: url(assets/img/product/product3.jpg)">
+                                    </div>
+                                </a>
+                            </div>
 
                     </div>
                     <div class="col l-7 m-12s s-12 pl">
@@ -282,26 +226,37 @@
                                 <a href="#" class="breadcrumb__link">Cửa hàng</a>
                             </div>
                             <div class="breadcrumb__item">
-                                <a href="#" class="breadcrumb__link">Hãng DHC</a>
+                                <a href="#" class="breadcrumb__link"><?php echo $row["branch"] ?></a>
                             </div>
                         </div>
                         <h3 class="productInfo__name">
-                            Azrouel dress variable
+                            <?php echo $row["name"] ?>
                         </h3>
                         <div class="productInfo__price">
-                            330.000 <span class="priceInfo__unit">đ</span>
+                            <?php echo number_format($row1["price"])?> <span class="priceInfo__unit">đ</span>
                         </div>
                         <div class="productInfo__description">
-                            <span> Lorem Ipsum </span> chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn. Lorem Ipsum đã được sử dụng như một văn bản chuẩn cho ngành công nghiệp in ấn
+                            <span><?php echo $row["name"] ?></span> <?php echo $row["description"] ?>
                         </div>
 
                         <div class="productInfo__addToCart">
-                            <div class="buttons_added">
-                                <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="1">
-                                <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
-                            </div>
-                            <div class=" btn btn--default orange ">Thêm vào giỏ</div>
+
+
+                            <form action="addProduct.php?id=<?= $row["id"] ?>" method="POST">
+                                <div class="buttons_added">
+                                    <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
+                                    <input aria-label="quantity" class="input-qty" max="10" min="1" name="quantity" type="number" value="1">
+                                    <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                </div>
+                                <div class=" btn btn--default orange ">
+
+                                    <button>Thêm vào giỏ</button>
+
+                                </div>
+                            </form>
+
+
+
                         </div>
                         <div class="productIndfo__policy ">
                             <div class="policy bg-1 ">
@@ -335,11 +290,12 @@
                         </div>
                         <div class="productIndfo__category ">
                             <p class="productIndfo__category-text"> Danh mục : <a href="# " class="productIndfo__category-link ">Nail</a></p>
-                            <p class="productIndfo__category-text"> Hãng : <a href="# " class="productIndfo__category-link ">The Face Shop</a></p>
-                            <p class="productIndfo__category-text"> Số lượng đã bán : 322</p>
-                            <p class="productIndfo__category-text"> Số lượng trong kho : 322</p>
+                            <p class="productIndfo__category-text"> Hãng : <a href="# " class="productIndfo__category-link "><?php echo $row["branch"] ?></a></p>
+                            <p class="productIndfo__category-text"> Số lượng đã bán : <?php echo $row["sold"] ?></p>
+                            <p class="productIndfo__category-text"> Số lượng trong kho : <?php echo $row["quantity"] ?></p>
 
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -360,19 +316,17 @@
                         <div class="tab-content ">
                             <div class="tab-pane active ">
                                 <div class="productDes ">
-                                    <div class="productDes__title ">Lorem Ipsum là gì?</div>
+                                    <div class="productDes__title "><?php echo $row["name"] ?> là gì?</div>
+                                    <p class="productDes__text "> <a href="# " class="productDes__link "> <?php echo $row["description"] ?></a>
+                                    </p>
+                                    <!-- <div class="productDes__title ">Lorem Ipsum là gì?</div>
                                     <p class="productDes__text "> <a href="# " class="productDes__link ">Lorem Ipsum </a> chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn. Lorem Ipsum đã được sử dụng như một văn bản chuẩn cho ngành
                                         công nghiệp in ấn từ những năm 1500, khi một họa sĩ vô danh ghép nhiều đoạn văn bản với nhau để tạo thành một bản mẫu văn bản. Đoạn văn bản này không những đã tồn tại năm thế kỉ, mà khi được áp dụng vào tin học
                                         văn phòng, nội dung của nó vẫn không hề bị thay đổi. Nó đã được phổ biến trong những năm 1960 nhờ việc bán những bản giấy Letraset in những đoạn Lorem Ipsum, và gần đây hơn, được sử dụng trong các ứng dụng dàn trang,
                                         như Aldus PageMaker.
-                                    </p>
-                                    <div class="productDes__title ">Lorem Ipsum là gì?</div>
-                                    <p class="productDes__text "> <a href="# " class="productDes__link ">Lorem Ipsum </a> chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn. Lorem Ipsum đã được sử dụng như một văn bản chuẩn cho ngành
-                                        công nghiệp in ấn từ những năm 1500, khi một họa sĩ vô danh ghép nhiều đoạn văn bản với nhau để tạo thành một bản mẫu văn bản. Đoạn văn bản này không những đã tồn tại năm thế kỉ, mà khi được áp dụng vào tin học
-                                        văn phòng, nội dung của nó vẫn không hề bị thay đổi. Nó đã được phổ biến trong những năm 1960 nhờ việc bán những bản giấy Letraset in những đoạn Lorem Ipsum, và gần đây hơn, được sử dụng trong các ứng dụng dàn trang,
-                                        như Aldus PageMaker.
-                                    </p>
+                                    </p> -->
                                 </div>
+                            <?php } ?>
                             </div>
                             <div class="tab-pane ">
                                 <div class="productDes__ratting ">
@@ -674,8 +628,8 @@
                     <ul class="footer__list ">
                         <li class="footer__item ">
                             <span class="footer__text ">
-                                    <i class="fas fa-map-marked-alt "></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
-                                </span>
+                                <i class="fas fa-map-marked-alt "></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
+                            </span>
                         </li>
                         <li class="footer__item ">
                             <a href="# " class="footer__link ">
@@ -690,15 +644,15 @@
                         <li class="footer__item ">
                             <div class="social-group ">
                                 <a href="# " class="social-item "><i class="fab fa-facebook-f "></i>
-                                    </a>
+                                </a>
                                 <a href="# " class="social-item "><i class="fab fa-twitter "></i>
-                                    </a>
+                                </a>
                                 <a href="# " class="social-item "><i class="fab fa-pinterest-p "></i>
-                                    </a>
+                                </a>
                                 <a href="# " class="social-item "><i class="fab fa-invision "></i>
-                                    </a>
-                                <a href="# " class="social-item "><i class="fab fa-youtube "></i>  
-                                    </a>
+                                </a>
+                                <a href="# " class="social-item "><i class="fab fa-youtube "></i>
+                                </a>
                             </div>
                         </li>
                     </ul>
@@ -848,7 +802,7 @@
                 if (current < 0) {
                     current = count;
                 }
-                if (current > count)  {
+                if (current > count) {
                     current = 0;
                 }
 
