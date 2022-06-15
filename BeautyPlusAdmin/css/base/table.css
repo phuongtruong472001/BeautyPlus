@@ -1,0 +1,125 @@
+.sticky-table {
+    overflow: auto;
+    width: 100%;
+    border: 1px solid #ffffff;
+}
+
+.sticky-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.sticky-table tbody tr {
+    border-top: 1px solid #afafaf;
+    border-bottom: 1px solid #afafaf;
+    background-color: #ffffff;
+}
+
+.sticky-table thead tr {
+    border-bottom: 1px solid #afafaf;
+}
+
+.sticky-table table th,
+.sticky-table table td {
+    padding: 0px 10px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.sticky-table table input[type='checkbox'] {
+    width: 18px;
+    height: 16px;
+}
+
+.sticky-table table tbody tr {
+    border-top: 1px solid #f0f4f8;
+}
+
+.sticky-table table th:not(td:first-child, td:last-child),
+.sticky-table table td:not(td:first-child, td:last-child) {
+    border-left: 1px dotted #c7c7c7;
+    border-right: 1px dotted #c7c7c7;
+}
+
+
+.sticky-table table thead th {
+    background-color: #e5e8ec;
+    height: 34px;
+    font-family: NOTOSAN BOLD;
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.sticky-table table tbody td {
+    height: 44px;
+    font-family: NOTOSAN REGULAR;
+    font-size: 13px;
+    background-color: white;
+}
+
+
+
+.sticky-table tbody td:first-child,
+.sticky-table thead th:first-child {
+    position: sticky;
+    left: 0;
+}
+
+.sticky-table tbody td:last-child,
+.sticky-table thead th:last-child {
+    position: sticky;
+    right: 0;
+}
+
+.sticky-table table thead th{
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+}
+
+.m-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 30px 0px 20px;
+    width: 90%;
+    background-color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.m-table-footer,
+.m-table-action {
+    height: 58px;
+    background-color: #ffffff;
+}
+
+.m-table {
+    max-height: calc(100vh - 270px)
+}
+
+
+
+.m-table-footer {
+    font-family: NOTOSAN REGULAR;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.m-table-footer span {
+    font-family: NOTOSAN BOLD;
+}
+
+button {
+    background-color: transparent;
+    color: #288bcb;
+    text-transform: uppercase;
+}
+
+button:hover {
+    cursor: pointer;
+
+
+}
