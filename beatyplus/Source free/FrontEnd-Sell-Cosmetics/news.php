@@ -1,3 +1,5 @@
+<?php
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- https://cocoshop.vn/ -->
@@ -49,59 +51,74 @@
                     </div>
                 </div>
                 <div class="header__account">
-                    <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
-                    <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php
+                    if (isset($_SESSION['username']) && $_SESSION['username']) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username ='$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                    ?>
+                        <a class="header__account-login"><?php echo $row["fullname"] ?></a>
+                    <?php } else { ?>
+                        <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
+                        <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php } ?>
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
                     <?php
-                    include(".\assets\php\connect.php");
-                    $conn = mysqli_connect($host, $username, $password, $dbname);
-                    $sql = "select * from cart";
-                    $result = $conn->query($sql);
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $sql = "select * from cart";
+                        $result = $conn->query($sql);
 
                     ?>
-                    <i class="fas fa-shopping-basket"></i>
-                    <div class="header__cart-amount">
-                        <?php echo $result->num_rows ?>
-                    </div>
-                    <div class="header__cart-wrap">
-                        <ul class="order__list">
-                            <?php
-                            include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
-                            $sql = "select * from cart ";
-                            $result = $conn->query($sql);
-                            $sum = 0;
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row['product_id'];
-                                $sql1 = "select * from cart inner join product where id=$ID";
-                                $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_assoc();
-                                $ThanhTien = $row['quantity'] * $row1['price'];
-                                $sum += $ThanhTien;
-                            ?>
-                                <li class="item-order">
-                                    <div class="order-wrap">
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                            <img src="./assets/img/product/product1.jpg" alt="">
-                                        </a>
-                                        <div class="order-main">
-                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <?php echo $result->num_rows ?>
+                        </div>
+                        <div class="header__cart-wrap">
+                            <ul class="order__list">
+                                <?php
+                                include(".\assets\php\connect.php");
+                                $sql = "select * from cart ";
+                                $result = $conn->query($sql);
+                                $sum = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                    $ID = $row['product_id'];
+                                    $sql1 = "select * from cart inner join product where id=$ID";
+                                    $result1 = $conn->query($sql1);
+                                    $row1 = $result1->fetch_assoc();
+                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $sum += $ThanhTien;
+                                ?>
+                                    <li class="item-order">
+                                        <div class="order-wrap">
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                                <img src="./assets/img/product/product1.jpg" alt="">
+                                            </a>
+                                            <div class="order-main">
+                                                <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                            </div>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
-                                    </div>
 
-                                </li>
-                            <?php } ?>
-                        </ul>
-                        <div class="total-money">Tổng cộng: <?php echo number_format($ThanhTien) ?> đ</div>
-                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
-                        <!-- norcart -->
-                        <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-                    </div>
+                                    </li>
+                                <?php } ?>
+
+                            </ul>
+                            <div class="total-money">Tổng cộng: <?php echo number_format($sum) ?></div>
+                            <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                            <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        </div>
+                    <?php } else { ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <a href="#my-Login"> 0</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -139,7 +156,7 @@
                         <ul class="sub-nav">
                             <?php
                             include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
+
                             $sql1 = " select * from category";
                             $result = $conn->query($sql1);
                             while ($row = $result->fetch_assoc()) { ?>
@@ -175,7 +192,28 @@
                 </div>
             </div>
             <div class="list-new">
-                <div href="#" class="new-item">
+                <?php
+                include(".\assets\php\connect.php");
+                $sql = "select * from news ";
+                $result = $conn->query($sql);
+                while ($row = $result->fetch_assoc()) {
+                ?>
+                    <div href="#" class="new-item">
+                        <a href="#" class="new-item__img">
+                            <img src="https://www.kosmebox.com/image/cache/data/BLOG/Nhung-item-makeup-nha-etude-house-gia-hat-de/Nhung-item-makeup-nha-etude-house-gia-hat-de-7-9-225x225.jpg" alt="">
+                        </a>
+                        <div class="new-item__body">
+                            <a href="#" class="new-item__title">
+                                <?php echo $row["title"] ?>
+                            </a>
+                            <p class="new-item__time"> Ngày đăng: <?php echo $row["created"] ?></p>
+                            <p class="new-item__description"><?php echo $row["content"] ?></p>
+                            <a href="#" class="btn btn--default">Xem thêm</a>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <!-- <div href="#" class="new-item">
                     <a href="#" class="new-item__img">
                         <img src="https://www.kosmebox.com/image/cache/data/BLOG/Nhung-item-makeup-nha-etude-house-gia-hat-de/Nhung-item-makeup-nha-etude-house-gia-hat-de-7-9-225x225.jpg" alt="">
                     </a>
@@ -231,45 +269,7 @@
                             nàng nào muốn đep chuẩn mực thì mời vào team.Không khác biệt nhiều so với các dòng makeup Hàn Quốc khác</p>
                         <a href="#" class="btn btn--default">Xem thêm</a>
                     </div>
-                </div>
-                <div href="#" class="new-item">
-                    <a href="#" class="new-item__img">
-                        <img src="https://www.kosmebox.com/image/cache/data/BLOG/Nhung-item-makeup-nha-etude-house-gia-hat-de/Nhung-item-makeup-nha-etude-house-gia-hat-de-7-9-225x225.jpg" alt="">
-                    </a>
-                    <div class="new-item__body">
-                        <a href="#" class="new-item__title">
-                            Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                            Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                        </a>
-                        <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
-                        <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
-                            vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
-                            vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí
-                            nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ,
-                            chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên,
-                            nàng nào muốn đep chuẩn mực thì mời vào team.Không khác biệt nhiều so với các dòng makeup Hàn Quốc khác</p>
-                        <a href="#" class="btn btn--default">Xem thêm</a>
-                    </div>
-                </div>
-                <div href="#" class="new-item">
-                    <a href="#" class="new-item__img">
-                        <img src="https://www.kosmebox.com/image/cache/data/BLOG/Nhung-item-makeup-nha-etude-house-gia-hat-de/Nhung-item-makeup-nha-etude-house-gia-hat-de-7-9-225x225.jpg" alt="">
-                    </a>
-                    <div class="new-item__body">
-                        <a href="#" class="new-item__title">
-                            Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                            Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa
-                        </a>
-                        <p class="new-item__time"> Ngày đăng: 27/5/2020</p>
-                        <p class="new-item__description">Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra
-                            vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng
-                            vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ, chất miễn đùa Không phải là những item makeup mới. Thậm chí
-                            nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên, nàng nào muốn Những Item makeup nhà Etude House giá hạt dẻ,
-                            chất miễn đùa Không phải là những item makeup mới. Thậm chí nếu không nói là lâu đời. Nhưng ở thời điểm hiện tại, chúng vẫn không lỗi thời. Rất lì lợm. Bao nhiêu dòng makeup mới ra vẫn không làm chúng ngao ngán. Và tất nhiên,
-                            nàng nào muốn đep chuẩn mực thì mời vào team.Không khác biệt nhiều so với các dòng makeup Hàn Quốc khác</p>
-                        <a href="#" class="btn btn--default">Xem thêm</a>
-                    </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="footer">

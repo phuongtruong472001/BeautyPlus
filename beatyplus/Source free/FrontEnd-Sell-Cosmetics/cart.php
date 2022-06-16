@@ -1,3 +1,5 @@
+<?php
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- https://cocoshop.vn/ -->
@@ -49,60 +51,74 @@
                     </div>
                 </div>
                 <div class="header__account">
-                    <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
-                    <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php
+                    if (isset($_SESSION['username']) && $_SESSION['username']) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username ='$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                    ?>
+                        <a class="header__account-login"><?php echo $row["fullname"] ?></a>
+                    <?php } else { ?>
+                        <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
+                        <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php } ?>
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
                     <?php
-                    include(".\assets\php\connect.php");
-                    $conn = mysqli_connect($host, $username, $password, $dbname);
-                    $sql = "select * from cart";
-                    $result = $conn->query($sql);
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $sql = "select * from cart";
+                        $result = $conn->query($sql);
 
                     ?>
-                    <i class="fas fa-shopping-basket"></i>
-                    <div class="header__cart-amount">
-                        <?php echo $result->num_rows ?>
-                    </div>
-                    <div class="header__cart-wrap">
-                        <ul class="order__list">
-                            <?php
-                            include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
-                            $sql = "select * from cart ";
-                            $result = $conn->query($sql);
-                            $sum=0;
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row['product_id'];
-                                $sql1 = "select * from cart inner join product where id=$ID";
-                                $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_assoc();
-                                $ThanhTien = $row['quantity'] * $row1['price'];
-                                $sum+=$ThanhTien;
-                            ?>
-                                <li class="item-order">
-                                    <div class="order-wrap">
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                            <img src="./assets/img/product/product1.jpg" alt="">
-                                        </a>
-                                        <div class="order-main">
-                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <?php echo $result->num_rows ?>
+                        </div>
+                        <div class="header__cart-wrap">
+                            <ul class="order__list">
+                                <?php
+                                include(".\assets\php\connect.php");
+                                $sql = "select * from cart ";
+                                $result = $conn->query($sql);
+                                $sum = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                    $ID = $row['product_id'];
+                                    $sql1 = "select * from cart inner join product where id=$ID";
+                                    $result1 = $conn->query($sql1);
+                                    $row1 = $result1->fetch_assoc();
+                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $sum += $ThanhTien;
+                                ?>
+                                    <li class="item-order">
+                                        <div class="order-wrap">
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                                <img src="./assets/img/product/product1.jpg" alt="">
+                                            </a>
+                                            <div class="order-main">
+                                                <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                            </div>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
-                                    </div>
 
-                                </li>
-                            <?php } ?>
+                                    </li>
+                                <?php } ?>
 
-                        </ul>
-                        <div class="total-money">Tổng cộng: <?php echo number_format($sum)?> đ</div>
-                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
-                        <!-- norcart -->
-                        <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-                    </div>
+                            </ul>
+                            <div class="total-money">Tổng cộng: <?php echo number_format($sum) ?></div>
+                            <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                            <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        </div>
+                    <?php } else { ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <a href="#my-Login"> 0</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -140,7 +156,7 @@
                         <ul class="sub-nav">
                             <?php
                             include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
+
                             $sql1 = " select * from category";
                             $result = $conn->query($sql1);
                             while ($row = $result->fetch_assoc()) { ?>
@@ -183,28 +199,29 @@
                             <div class="col l-2 m-2 s-4">Tổng</div>
                             <div class="col l-1 m-1 s-0">Xóa</div>
                         </div>
-                        <div class="row item">
-                            <?php
-                            include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
-                            $sql = "select * from cart ";
-                            $result = $conn->query($sql);
-                            $sum=0;
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row['product_id'];
-                                $sql1 = "select * from cart inner join product where id=$ID";
-                                $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_assoc();
-                                $ThanhTien = $row['quantity'] * $row1['price'];
-                                $sum+=$ThanhTien;
-                            ?>
+
+                        <?php
+                        include(".\assets\php\connect.php");
+
+                        $sql = "select * from cart ";
+                        $result = $conn->query($sql);
+                        $sum = 0;
+                        while ($row = $result->fetch_assoc()) {
+                            $ID = $row['product_id'];
+                            $sql1 = "select * from cart inner join product where id=$ID";
+                            $result1 = $conn->query($sql1);
+                            $row1 = $result1->fetch_assoc();
+                            $ThanhTien = $row['quantity'] * $row1['price'];
+                            $sum += $ThanhTien;
+                        ?>
+                            <div class="row item">
                                 <div class="col l-1 m-1 s-0">
                                     <input type="checkbox" name="a">
                                 </div>
                                 <div class="col l-4  m-4 s-8">
                                     <div class="main__cart-product">
                                         <img src="./assets/img/product/product2.jpg" alt="">
-                                        <div class="name"><?php echo $row1["name"] ?></div>
+                                        <div class="name"><a href="product.php?id=<?= $row1["id"] ?>"><?php echo $row1["name"] ?></a></div>
                                     </div>
                                 </div>
                                 <div class="col l-2 m-2 s-0">
@@ -216,17 +233,18 @@
                                         <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
                                         <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
                                     </div>
-                                <?php } ?>
                                 </div>
                                 <div class="col l-2 m-2 s-4">
                                     <div class="main__cart-price"> <?php echo number_format($ThanhTien) ?> đ</div>
                                 </div>
+
                                 <div class="col l-1 m-1 s-0">
                                     <span class="main__cart-icon">
                                         <i class="far fa-times-circle "></i>
                                     </span>
                                 </div>
-                        </div>
+                            </div>
+                        <?php } ?>
                         <div class="btn btn--default">
                             Cập nhật giỏ hàng
                         </div>
@@ -239,7 +257,7 @@
                             <div class="main__pay-text">
                                 Tổng phụ</div>
                             <div class="main__pay-price">
-                            <?php echo number_format($sum) ?> ₫
+                                <?php echo number_format($sum) ?> ₫
                             </div>
                         </div>
                         <div class="pay-info">
@@ -255,10 +273,13 @@
                             <div class="main__pay-text">
                                 Tổng thành tiền</div>
                             <div class="main__pay-price">
-                            <?php echo number_format($sum) ?> ₫
+                                <?php echo number_format($sum) ?> ₫
                             </div>
                         </div>
-                        <div class="btn btn--default orange">Tiến hành thanh toán</div>
+                        <!-- <div class="btn btn--default orange">Tiến hành thanh toán</div> -->
+                        <form action="xulythanhtoan.php" method="POST">
+                            <div class="btn btn--default"><button>Đặt hàng</button></div>
+                        </form>
                         <div class="main__pay-title">Phiếu ưu đãi</div>
                         <input type="text" class="form-control">
                         <div class="btn btn--default">Áp dụng</div>
