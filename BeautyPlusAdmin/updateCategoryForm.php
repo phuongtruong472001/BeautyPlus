@@ -22,16 +22,13 @@ include_once('connectDB.php');
 </head>
 
 <body>
-    <?php
-    // lấy thông tin tài khoản cần sửa
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM user WHERE id=$id";
-    $rs = $conn->query($sql)->fetch_assoc();
-    $username = $rs['username'];
-    $fullname = $rs['fullname'];
-    $address = $rs['address'];
-    $phone = $rs['phone'];
-    $email = $rs['email'];
+<?php
+        // lấy thông tin danh mục cần sửa
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM category WHERE id=$id";
+        $rs = $conn->query($sql)->fetch_assoc();
+        $name = $rs['name'];
+        $description = $rs['description'];
     ?>
 
     <div class="container">
@@ -78,16 +75,16 @@ include_once('connectDB.php');
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
-                    <div class="title">Sửa tài khoản</div>
+                    <div class="title">Sửa danh mục</div>
                 </div>
 
-                <!-- form them bai viet -->
-                <form action="updateUser.php" method="POST">
+                <!-- form them danh muc -->
+                <form action="updateCategory.php" method="POST">
                     <div>
                         <div class="add-emoloyee-form ui-draggable ui-draggable-handle" style="position: relative;">
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
-                                    Thông tin tài khoản
+                                    Thông tin danh mục
                                 </div>
                                 <div class="m-form-close">
                                     <div class="md-close">
@@ -98,35 +95,23 @@ include_once('connectDB.php');
                             <div class="m-form-content">
                                 <div>
                                     <div class="m-news-input">
-                                        <label for="">iD</label>
+                                        <label for="">ID</label>
                                         <input name="id" type="text" value="<?=$id?>" readonly>
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Tên đăng nhập</label>
-                                        <input name="username" type="text" value="<?=$username?>" readonly>
+                                        <label for="">Tên danh mục</label>
+                                        <input name="name" type="text" value="<?=$name?>">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Họ tên</label>
-                                        <input name="fullname" type="text" value="<?=$fullname?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Địa chỉ</label>
-                                        <input name="address" type="text" value="<?=$address?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Số điện thoại</label>
-                                        <input name="phone" type="text" value="<?=$phone?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Email</label>
-                                        <input name="email" type="text" value="<?=$email?>">
+                                        <label for="">Mô tả</label>
+                                        <input name="description" type="text" value="<?=$description?>">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="m-form-action">
                                 <div class="m-news-add-action">
-                                    <input class="m-news-save" type="submit" name="updateUser" value="Sửa">
+                                    <input class="m-news-save" type="submit" name="updateCategory" value="Sửa">
                                 </div>
                             </div>
                         </div>

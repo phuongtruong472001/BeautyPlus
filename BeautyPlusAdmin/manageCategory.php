@@ -12,7 +12,7 @@ include_once('connectDB.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quan ly danh muc</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./lib/jquery-3.6.0.min.js"></script>
     <script src="./lib/jquery-ui.min.js"></script>
@@ -22,18 +22,6 @@ include_once('connectDB.php');
 </head>
 
 <body>
-    <?php
-    // lấy thông tin tài khoản cần sửa
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM user WHERE id=$id";
-    $rs = $conn->query($sql)->fetch_assoc();
-    $username = $rs['username'];
-    $fullname = $rs['fullname'];
-    $address = $rs['address'];
-    $phone = $rs['phone'];
-    $email = $rs['email'];
-    ?>
-
     <div class="container">
         <div class="navbar stick-navbar">
             <div class="m-logo">
@@ -78,16 +66,63 @@ include_once('connectDB.php');
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
-                    <div class="title">Sửa tài khoản</div>
+                    <div class="title">Danh mục</div>
+                    <div class="add-new-employee">
+                        <button class="btn-add m-news-add">Thêm</button>
+                        <div class="btn-space">
+                            <div></div>
+                        </div>
+                        <button class="import-from-excel">
+                            <div></div>
+                        </button>
+                    </div>
+                </div>
+                <div class="m-table-wrapper">
+
+
+                    <div class="m-table-action">
+                    </div>
+                    <div class="m-table sticky-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>tên</th>
+                                    <th>mô tả</th>
+                                    <th class="fixed-coloumn-last">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = "SELECT * FROM category";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td><?= $row['id'] ?></td>
+                                        <td><?= $row['name'] ?></td>
+                                        <td><?= $row['description'] ?></td>
+                                        <td>
+                                            <a href="updateCategoryForm.php?id=<?=$row['id']?>">sửa</a>
+                                            <a href="deleteCategory.php?id=<?=$row['id']?>">xóa</a>
+                                        </td>
+                                    </tr>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="m-table-footer"></div>
                 </div>
 
-                <!-- form them bai viet -->
-                <form action="updateUser.php" method="POST">
-                    <div>
+                <!-- form them phan loai -->
+                <form action="addCategory.php" method="POST">
+                    <div class="m-dialogue" style="display: none;">
                         <div class="add-emoloyee-form ui-draggable ui-draggable-handle" style="position: relative;">
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
-                                    Thông tin tài khoản
+                                    Thông tin Danh mục
                                 </div>
                                 <div class="m-form-close">
                                     <div class="md-close">
@@ -98,35 +133,19 @@ include_once('connectDB.php');
                             <div class="m-form-content">
                                 <div>
                                     <div class="m-news-input">
-                                        <label for="">iD</label>
-                                        <input name="id" type="text" value="<?=$id?>" readonly>
+                                        <label for="">Tên Danh mục</label>
+                                        <input name="name" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Tên đăng nhập</label>
-                                        <input name="username" type="text" value="<?=$username?>" readonly>
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Họ tên</label>
-                                        <input name="fullname" type="text" value="<?=$fullname?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Địa chỉ</label>
-                                        <input name="address" type="text" value="<?=$address?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Số điện thoại</label>
-                                        <input name="phone" type="text" value="<?=$phone?>">
-                                    </div>
-                                    <div class="m-news-input">
-                                        <label for="">Email</label>
-                                        <input name="email" type="text" value="<?=$email?>">
+                                        <label for="">Mô tả</label>
+                                        <input name="description" type="text">
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <div class="m-form-action">
                                 <div class="m-news-add-action">
-                                    <input class="m-news-save" type="submit" name="updateUser" value="Sửa">
+                                    <input class="m-news-save" type="submit" name="addCategory" value="thêm">
                                 </div>
                             </div>
                         </div>

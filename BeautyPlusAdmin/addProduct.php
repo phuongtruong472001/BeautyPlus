@@ -5,13 +5,13 @@
         $category_id = $_POST['category'];
         $quantity = $_POST['quantity'];
         $disscount = $_POST['disscount'];
-        $branch = $_POST['branch'];
+        $brand = $_POST['brand'];
         $description = $_POST['description'];
         $price = $_POST['price'];
 
-        if(empty($name) || empty($category_id) || empty($quantity) || empty($disscount) || empty($price)){
+        if(empty($name) || empty($price+1) || empty($category_id+1) || empty($quantity+1) || empty($disscount+1)){
             echo "<script>
-                alert(\"Tên sản phẩm, danh mục, số lượng, khuyến mại, giá không được để trống\");
+                alert(\"Các trường không được để trống\");
                 window.location = '././manageProduct.php';
             </script>";
         }else{

@@ -1,4 +1,3 @@
-<!-- NOTE : user thêm ở trang admin sẽ có quyền admin -->
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
@@ -13,7 +12,7 @@ include_once('connectDB.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quan ly tai khoan</title>
+    <title>Quan ly san pham</title>
     <link rel="stylesheet" href="./index.css">
     <script src="./lib/jquery-3.6.0.min.js"></script>
     <script src="./lib/jquery-ui.min.js"></script>
@@ -67,7 +66,7 @@ include_once('connectDB.php');
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
-                    <div class="title">Tài Khoản</div>
+                    <div class="title">Sản phẩm</div>
                     <div class="add-new-employee">
                         <button class="btn-add m-news-add">Thêm</button>
                         <div class="btn-space">
@@ -87,35 +86,39 @@ include_once('connectDB.php');
                         <table>
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
                                     <th>id</th>
-                                    <th>Tên Tài Khoản</th>
-                                    <th>Họ Tên</th>
-                                    <th>Vai Trò</th>
-                                    <th>Địa chỉ</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Email</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng có</th>
+                                    <th>Đã bán</th>
+                                    <th>khuyến mại(%)</th>
+                                    <th>Thương hiệu</th>
+                                    <th>Mô tả</th>
                                     <th class="fixed-coloumn-last">Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT * FROM user";
+                                $sql = "SELECT * FROM product";
                                 $result = $conn->query($sql);
                                 while ($row = $result->fetch_assoc()) {
+                                    $temp = $row['category_id'];
+                                    $category_name = $conn->query("SELECT name FROM category WHERE id=$temp")->fetch_assoc()['name'];
                                 ?>
                                     <tr>
-                                        <td class="fixed-coloumn-first"><input type="checkbox"></td>
                                         <td><?= $row['id'] ?></td>
-                                        <td><?= $row['username'] ?></td>
-                                        <td><?= $row['fullname'] ?></td>
-                                        <td><?= $row['role'] ?></td>
-                                        <td><?= $row['address'] ?></td>
-                                        <td><?= $row['phone'] ?></td>
-                                        <td><?= $row['email'] ?></td>
+                                        <td><?= $row['name'] ?></td>
+                                        <td><?= $category_name ?></td>
+                                        <td><?=$row['price']?></td>
+                                        <td><?= $row['quantity'] ?></td>
+                                        <td><?= $row['sold'] ?></td>
+                                        <td><?= $row['disscount'] ?></td>
+                                        <td><?= $row['brand'] ?></td>
+                                        <td><?= $row['description'] ?></td>
                                         <td>
-                                            <a href="updateUserForm.php?id=<?= $row['id'] ?>">sửa</a>
-                                            <a href="deleteUser.php?id=<?= $row['id'] ?>">xóa</a>
+                                            <a href="updateProductForm.php?id=<?=$row['id']?>">sửa</a>
+                                            <a href="deleteProduct.php?id=<?=$row['id']?>">xóa</a>
                                         </td>
                                     </tr>
                                 <?php
@@ -127,13 +130,13 @@ include_once('connectDB.php');
                     <div class="m-table-footer"></div>
                 </div>
 
-                <!-- form them bai viet -->
-                <form action="addUser.php" method="POST">
+                <!-- form them phan loai -->
+                <form action="addProduct.php" method="POST">
                     <div class="m-dialogue" style="display: none;">
                         <div class="add-emoloyee-form ui-draggable ui-draggable-handle" style="position: relative;">
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
-                                    Thông tin bài viết
+                                    Thông tin Sản phẩm
                                 </div>
                                 <div class="m-form-close">
                                     <div class="md-close">
@@ -144,39 +147,47 @@ include_once('connectDB.php');
                             <div class="m-form-content">
                                 <div>
                                     <div class="m-news-input">
-                                        <label for="">Tên đăng nhập</label>
-                                        <input name="username" type="text" required>
+                                        <label for="">Tên Sản phẩm</label>
+                                        <input name="name" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Mật khẩu</label>
-                                        <input name="password" type="text" required>
+                                        <label for="">Danh mục</label>
+                                        <select name="category">
+                                        <?php
+                                            $sql = "SELECT name, id FROM category";
+                                            $rs = $conn->query($sql);
+                                            while($row = $rs->fetch_assoc()){
+                                                echo "<option value=\"".$row['id']."\">".$row['name']."</option>";
+                                            }
+                                        ?>
+                                        </select>
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Nhập lại mật khẩu</label>
-                                        <input name="confirmPassword" type="text" required>
+                                        <label for="">Giá</label>
+                                        <input name="price" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Họ tên</label>
-                                        <input name="fullname" type="text">
+                                        <label for="">Số lượng có</label>
+                                        <input name="quantity" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Địa chỉ</label>
-                                        <input name="address" type="text">
+                                        <label for="">Khuyến mãi</label>
+                                        <input name="disscount" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Số điện thoại</label>
-                                        <input name="phone" type="text">
+                                        <label for="">Thương hiệu</label>
+                                        <input name="brand" type="text">
                                     </div>
                                     <div class="m-news-input">
-                                        <label for="">Email</label>
-                                        <input name="email" type="text">
+                                        <label for="">Mô tả</label>
+                                        <input name="description" type="text">
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="m-form-action">
                                 <div class="m-news-add-action">
-                                    <input class="m-news-save" type="submit" name="addUser" value="thêm">
+                                    <input class="m-news-save" type="submit" name="addProduct" value="thêm">
                                 </div>
                             </div>
                         </div>
