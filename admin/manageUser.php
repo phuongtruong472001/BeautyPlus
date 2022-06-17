@@ -79,7 +79,7 @@ include_once('connectDB.php');
                         <td><?= $row['phone'] ?></td>
                         <td><?= $row['email'] ?></td>
                         <td>
-                            <a href="updateUser.php?id=<?= $row['id'] ?>">sửa</a>
+                            <a href="updateUserForm.php?id=<?= $row['id'] ?>">sửa</a>
                             <a href="deleteUser.php?id=<?= $row['id'] ?>">xóa</a>
                         </td>
                     </tr>
