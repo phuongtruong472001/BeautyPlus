@@ -24,7 +24,7 @@ session_start();
 			if($username == "" || $password == ""){
 				echo "không được để trống trường tên tài khoản hoặc mật khẩu.";
 			}else{
-				$sql = "select * from user where username = '$username' and password = '$password' ";
+				$sql = "SELECT * FROM user WHERE username = '$username' AND password = '$password' AND role='admin'";
 				$query = $conn->query($sql);
 				$num_rows = $query->num_rows;
 				if($num_rows==0){
