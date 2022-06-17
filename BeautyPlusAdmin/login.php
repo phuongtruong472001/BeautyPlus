@@ -32,7 +32,7 @@ session_start();
 				}else{
 					$_SESSION['username'] = $username;
 					//chuyển hướng đến trang index;
-					header('Location: index.php');
+					header('Location: manageUser.php');
 				}
 			}
 		}
