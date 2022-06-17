@@ -61,6 +61,7 @@
             <th>id</th>
             <th>Tên sản phẩm</th>
             <th>Danh mục</th>
+            <th>Giá</th>
             <th>Số lượng có</th>
             <th>Đã bán</th>
             <th>khuyến mại(%)</th>
@@ -77,13 +78,14 @@
                 <td><?= $row['id'] ?></td>
                 <td><?= $row['name'] ?></td>
                 <td><?= $category_name ?></td>
+                <td><?=$row['price']?></td>
                 <td><?= $row['quantity'] ?></td>
                 <td><?= $row['sold'] ?></td>
                 <td><?= $row['disscount'] ?></td>
                 <td><?= $row['brand'] ?></td>
                 <td><?= $row['description'] ?></td>
                 <td>
-                    <a href="updateProduct.php?id=<?=$row['id']?>">sửa</a>
+                    <a href="updateProductForm.php?id=<?=$row['id']?>">sửa</a>
                     <a href="deleteProduct.php?id=<?=$row['id']?>">xóa</a>
                 </td>
             </tr>
