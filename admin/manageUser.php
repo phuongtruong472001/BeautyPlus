@@ -1,10 +1,10 @@
 <!-- NOTE : user thêm ở trang admin sẽ có quyền admin -->
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header('Location: login.php');
-    }
-    include_once('connectDB.php');
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php');
+}
+include_once('connectDB.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quan Ly Tai Khoan</title>
+    <link rel="stylesheet" href="./../BeautyPlusAdmin/index.css">
 </head>
 
 <body>
@@ -48,41 +49,47 @@
     </div>
 
     <?php
-        $sql = "SELECT * FROM user";
-        $result = $conn->query($sql);
+    $sql = "SELECT * FROM user";
+    $result = $conn->query($sql);
     ?>
-    <table border="1">
-        <tr>
-            <th>id</th>
-            <th>Tên Tài Khoản</th>
-            <th>Họ Tên</th>
-            <th>Vai Trò</th>
-            <th>Địa chỉ</th>
-            <th>Số điện thoại</th>
-            <th>Email</th>
-            <th>Thao tác</th>
-        </tr>
-        <?php
-        while ($row = $result->fetch_assoc()) {
-        ?>
-            <tr>
-                <td><?= $row['id'] ?></td>
-                <td><?= $row['username'] ?></td>
-                <td><?= $row['fullname'] ?></td>
-                <td><?= $row['role'] ?></td>
-                <td><?= $row['address'] ?></td>
-                <td><?= $row['phone'] ?></td>
-                <td><?= $row['email'] ?></td>
-                <td>
-                    <a href="updateUser.php?id=<?=$row['id']?>">sửa</a>
-                    <a href="deleteUser.php?id=<?=$row['id']?>">xóa</a>
-                </td>
-            </tr>
-        <?php
-        }
-        ?>
-    </table>
+    <div class="m-table sticky-table">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Tên Tài Khoản</th>
+                    <th>Họ Tên</th>
+                    <th>Vai Trò</th>
+                    <th>Địa chỉ</th>
+                    <th>Số điện thoại</th>
+                    <th>Email</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                while ($row = $result->fetch_assoc()) {
+                ?>
+                    <tr>
+                        <td><?= $row['id'] ?></td>
+                        <td><?= $row['username'] ?></td>
+                        <td><?= $row['fullname'] ?></td>
+                        <td><?= $row['role'] ?></td>
+                        <td><?= $row['address'] ?></td>
+                        <td><?= $row['phone'] ?></td>
+                        <td><?= $row['email'] ?></td>
+                        <td>
+                            <a href="updateUser.php?id=<?= $row['id'] ?>">sửa</a>
+                            <a href="deleteUser.php?id=<?= $row['id'] ?>">xóa</a>
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </tbody>
+        </table>
 
+    </div>
 
     <!-----------------CSS--------------------->
     <style>
@@ -128,7 +135,7 @@
         }
 
         .close:hover,
-        
+
         .close:focus {
             color: #000;
             text-decoration: none;
@@ -165,4 +172,5 @@
         }
     </script>
 </body>
+
 </html>
