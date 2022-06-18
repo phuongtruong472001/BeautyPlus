@@ -24,13 +24,13 @@ session_start();
 		$password = strip_tags($password);
 		$password = addslashes($password);
 		if ($username == "" || $password == "") {
-			echo "<p>không được để trống trường tên tài khoản hoặc mật khẩu.</p>";
+			echo "không được để trống trường tên tài khoản hoặc mật khẩu.";
 		} else {
 			$sql = "SELECT * FROM user WHERE username = '$username' AND password = '$password' AND role='admin'";
 			$query = $conn->query($sql);
 			$num_rows = $query->num_rows;
 			if ($num_rows == 0) {
-				echo "<p>Tên đăng nhập hoặc mật khẩu không đúng.</p>";
+				echo "Tên đăng nhập hoặc mật khẩu không đúng.";
 			} else {
 				$_SESSION['username'] = $username;
 				//chuyển hướng đến trang index;

@@ -1,4 +1,11 @@
 <?php
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header('Location: login.php');
+    }
+    include_once('connectDB.php');
+?>
+<?php
     include_once('connectDB.php');
     if(isset($_POST['addCategory'])){
         $name = $_POST['name'];
