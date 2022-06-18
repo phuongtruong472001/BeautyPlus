@@ -32,37 +32,8 @@ include_once('connectDB.php');
             <div class="menu-item-list scroll-bar"></div>
         </div>
         <div class="main" style="width: 624px;">
-            <div class="header">
-                <div class="h-bars">
-                    <div></div>
-                </div>
-                <div class="h-brands">
-                    <div class="h-brand-name">
-                        <p>BEAUTY PLUS</p>
-                    </div>
-                    <div class="h-dropdown">
-                        <div></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="h-current-db">
-                        <div class="icon-header-current-db"></div>
-                        <div class="header-current-db-name">DC-02</div>
-                    </div>
-                </div>
-                <div class="download-process">
-                    <div class="icon-download-process">
+        <?php include('header.php') ?>
 
-                    </div>
-                </div>
-                <div class="h-search">
-
-                    <div class="m-icon-input">
-                        <div></div>
-                        <input placeholder="Nhập từ khoá tìm kiểm" type="text" class="h-input m-input">
-                    </div>
-                </div>
-            </div>
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
@@ -104,7 +75,6 @@ include_once('connectDB.php');
                                         <td><?= $row['description'] ?></td>
                                         <td>
                                             <a href="updateCategoryForm.php?id=<?=$row['id']?>">sửa</a>
-                                            <a href="deleteCategory.php?id=<?=$row['id']?>">xóa</a>
                                         </td>
                                     </tr>
                                 <?php
