@@ -5,7 +5,7 @@ const data = [{
     position: "-33px -1630px",
     activePosition: "-33px -1587px",
     title: "Quản Lý tài khoản",
-    url:"google.com"
+    url:"manageUser.php"
 },
 {
 
@@ -13,21 +13,24 @@ const data = [{
     height: 18,
     position: "-78px -1631px",
     activePosition: "-78px -1588px",
-    title: "Quản lý danh mục"
+    title: "Quản lý danh mục",
+    url:"manageCategory.php"
 },
 {
     width: 16,
     height: 16,
     position: "-121px -1633px",
     activePosition: "-121px -1590px",
-    title: "Quản lý sản phẩm"
+    title: "Quản lý sản phẩm",
+    url:"manageProduct.php"
 },
 {
     width: 16,
     height: 18,
     position: "-165px -1632px",
     activePosition: "-165px -1589px",
-    title: "Quản lý bài viết"
+    title: "Quản lý bài viết",
+    url:"news.php"
 },
 {
     width: 20,
@@ -36,13 +39,14 @@ const data = [{
     activePosition: "-206px -1588px",
     title: "Thống kê"
 },
-    // {
-    //     width: 14,
-    //     height: 17,
-    //     position: "-254px -1632px",
-    //     activePosition: "-254px -1589px",
-    //     title: "Quản lý hoá đơn"
-    // },
+{
+    width: 14,
+    height: 17,
+    position: "-254px -1632px",
+    activePosition: "-254px -1589px",
+    title: "Quản lý hình ảnh",
+    url:"manageImage.php"
+},
     // {
     //     width: 18,
     //     height: 17,
