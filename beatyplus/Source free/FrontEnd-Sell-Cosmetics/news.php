@@ -59,7 +59,16 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <a class="header__account-login"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                            <!-- --------------------menu doc----------------- -->
+                            <div class="header__cart-wrap">
+                                <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="#">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
+
+
+                            </div>
+                        </div>
                     <?php } else { ?>
                         <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
                         <a href="#my-Register" class="header__account-register">Đăng Kí</a>
@@ -70,7 +79,12 @@ session_start(); ?>
                     <?php
                     if ((isset($_SESSION['username']) && $_SESSION['username'])) {
                         include(".\assets\php\connect.php");
-                        $sql = "select * from cart";
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        $user_id = $row['id'];
+                        $sql = "select * from cart where user_id=$user_id";
                         $result = $conn->query($sql);
 
                     ?>
@@ -82,7 +96,9 @@ session_start(); ?>
                             <ul class="order__list">
                                 <?php
                                 include(".\assets\php\connect.php");
-                                $sql = "select * from cart ";
+                                
+
+                                $sql = "select * from cart where user_id=$user_id";
                                 $result = $conn->query($sql);
                                 $sum = 0;
                                 while ($row = $result->fetch_assoc()) {
@@ -95,8 +111,13 @@ session_start(); ?>
                                 ?>
                                     <li class="item-order">
                                         <div class="order-wrap">
+                                        <?php
+                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $result2 = $conn->query($sql2);
+                                            $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                                <img src="./assets/img/product/product1.jpg" alt="">
+                                               
+                                                <img src="<?php echo $row2['link'] ?>" alt="">
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
@@ -162,7 +183,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -174,7 +195,7 @@ session_start(); ?>
                     <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>

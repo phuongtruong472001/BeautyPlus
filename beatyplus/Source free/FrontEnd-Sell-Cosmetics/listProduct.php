@@ -54,7 +54,16 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <a class="header__account-login"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                            <!-- --------------------menu doc----------------- -->
+                            <div class="header__cart-wrap">
+                                <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="#">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
+
+
+                            </div>
+                        </div>
                     <?php } else { ?>
                         <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
                         <a href="#my-Register" class="header__account-register">Đăng Kí</a>
@@ -65,7 +74,12 @@ session_start(); ?>
                     <?php
                     if ((isset($_SESSION['username']) && $_SESSION['username'])) {
                         include(".\assets\php\connect.php");
-                        $sql = "select * from cart";
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        $user_id = $row['id'];
+                        $sql = "select * from cart where user_id=$user_id";
                         $result = $conn->query($sql);
 
                     ?>
@@ -77,7 +91,9 @@ session_start(); ?>
                             <ul class="order__list">
                                 <?php
                                 include(".\assets\php\connect.php");
-                                $sql = "select * from cart ";
+
+
+                                $sql = "select * from cart where user_id=$user_id";
                                 $result = $conn->query($sql);
                                 $sum = 0;
                                 while ($row = $result->fetch_assoc()) {
@@ -157,7 +173,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -168,7 +184,7 @@ session_start(); ?>
                     <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>
@@ -205,215 +221,41 @@ session_start(); ?>
             <div class="productList">
                 <div class="listProduct">
                     <div class="row">
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
+                        <?php
+                        include(".\assets\php\connect.php");
+                        $category_id=$_GET["id"];
+                        $sql1 = " select * from product where category_id=$category_id";
+                        $result = $conn->query($sql1);
+                        while ($row = $result->fetch_assoc()) {
+                            $ID = $row["id"];
+
+                        ?>
+                            <div class="col l-2 m-4 s-6">
+                                <div class="product">
+                                    <?php
+                                    $sql2 = "select * from image where product_id=$ID ";
+                                    $result2 = $conn->query($sql2);
+                                    $row2 = $result2->fetch_assoc(); ?>
+                                    <div class="product__avt" style="background-image: url(<?php echo $row2['link'] ?>);">
                                     </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
+                                    <div class="product__info">
+                                        <h3 class="product__name"><?php echo $row["name"] ?></h3>
+                                        <div class="product__price">
+                                            <div class="price__old">
+                                                <?php echo number_format($row["price"]) ?>
+                                            </div>
+                                            <div class="price__new"><?php echo number_format($row["price"] * (100 - $row["disscount"]) / 100) ?> <span class="price__unit">đ</span></div>
+                                        </div>
+                                        <div class="product__sale">
+                                            <span class="product__sale-percent"><?php echo $row["disscount"]  ?>%</span>
+                                            <span class="product__sale-text">Giảm</span>
+                                        </div>
                                     </div>
+                                    <a class="viewDetail" href="product.php?id=<?= $row["id"] ?>">Chi tiết</a>
+
                                 </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
                             </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
-                        <div class="col l-2 m-4 s-6">
-                            <div class="product">
-                                <div class="product__avt" style="background-image: url(assets/img/product/product1.jpg)">
-                                </div>
-                                <div class="product__info">
-                                    <h3 class="product__name">Framed-Sleeve Tops Group</h3>
-                                    <div class="product__price">
-                                        <div class="price__old">340.000 <span class="price__unit">đ</span></div>
-                                        <div class="price__new">320.000 <span class="price__unit">đ</span></div>
-                                    </div>
-                                </div>
-                                <div class="product__sale">
-                                    <span class="product__sale-percent">22%</span>
-                                    <span class="product__sale-text">Giảm</span>
-                                </div>
-                                <a href="#" class="viewDetail">Xem chi tiết</a>
-                                <a href="#" class="addToCart">Thêm vào giỏ</a>
-                            </div>
-                        </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="pagination">

@@ -41,6 +41,9 @@ header('Content-Type: text/html; charset=UTF-8');
         $quantity=$row1['quantity'];
         $sql2 = "insert into bill_product(bill_id,product_id,quantity) values($id_bill,$ID,$quantity)";
         $result2 = $conn->query($sql2);
+
+        $sql3 = "update product set quantity=quantity-$quantity,sold=sold+$quantity where id=$ID";
+        $result3 = $conn->query($sql3);
        
     }
     $sql1 = "delete  from cart ";
