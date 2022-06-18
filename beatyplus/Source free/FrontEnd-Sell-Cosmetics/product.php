@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- https://cocoshop.vn/ -->
@@ -28,12 +31,20 @@
     <script src="assets/owlCarousel/owl.carousel.min.js"></script>
 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+
+
 </head>
 
 <body>
     <?php
     include("category.php");
+
     ?>
+
+
+    <!--/.container-->
+
+
     <div class="header scrolling" id="myHeader">
         <div class="grid wide">
             <div class="header__top">
@@ -54,66 +65,102 @@
                     </div>
                 </div>
                 <div class="header__account">
-                    <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
-                    <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username ='$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                    ?>
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                            <!-- --------------------menu doc----------------- -->
+                            <div class="header__cart-wrap">
+                                <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="#">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
+
+
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
+                        <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php } ?>
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
                     <?php
-                    include(".\assets\php\connect.php");
-                    $conn = mysqli_connect($host, $username, $password, $dbname);
-                    $sql = "select * from cart";
-                    $result = $conn->query($sql);
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        $user_id = $row['id'];
+                        $sql = "select * from cart where user_id=$user_id";
+                        $result = $conn->query($sql);
 
                     ?>
-                    <i class="fas fa-shopping-basket"></i>
-                    <div class="header__cart-amount">
-                        <?php echo $result->num_rows ?>
-                    </div>
-                    <div class="header__cart-wrap">
-                        <ul class="order__list">
-                            <?php
-                            include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
-                            $sql = "select * from cart ";
-                            $result = $conn->query($sql);
-                            $sum=0;
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row['product_id'];
-                                $sql1 = "select * from cart inner join product where id=$ID";
-                                $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_assoc();
-                                $ThanhTien = $row['quantity'] * $row1['price'];
-                                $sum+=$ThanhTien;
-                            ?>
-                                <li class="item-order">
-                                    <div class="order-wrap">
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                            <img src="./assets/img/product/product1.jpg" alt="">
-                                        </a>
-                                        <div class="order-main">
-                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
-                                        </div>
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
-                                    </div>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <?php echo $result->num_rows ?>
+                        </div>
+                        <div class="header__cart-wrap">
+                            <ul class="order__list">
+                                <?php
+                                include(".\assets\php\connect.php");
 
-                                </li>
-                            <?php } ?>
-                        </ul>
-                        <div class="total-money">Tổng cộng: <?php echo number_format($ThanhTien) ?> đ</div>
-                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
-                        <!-- norcart -->
-                        <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-                    </div>
+
+                                $sql = "select * from cart where user_id=$user_id";
+                                $result = $conn->query($sql);
+                                $sum = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                    $ID = $row['product_id'];
+                                    $sql1 = "select * from cart inner join product where id=$ID";
+                                    $result1 = $conn->query($sql1);
+                                    $row1 = $result1->fetch_assoc();
+                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $sum += $ThanhTien;
+                                ?>
+                                    <li class="item-order">
+                                        <div class="order-wrap">
+                                        <?php
+                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $result2 = $conn->query($sql2);
+                                            $row2 = $result2->fetch_assoc(); ?>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                               
+                                                <img src="<?php echo $row2['link'] ?>" alt="">
+                                            </a>
+                                            <div class="order-main">
+                                                <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                            </div>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
+                                        </div>
+
+                                    </li>
+                                <?php } ?>
+
+                            </ul>
+                            <div class="total-money">Tổng cộng: <?php echo number_format($sum) ?></div>
+                            <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                            <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        </div>
+                    <?php } else { ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <a href="#my-Login"> 0</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
         <!-- Menu -->
         <div class="header__nav">
             <ul class="header__nav-list">
-                <li class="header__nav-item nav__search">
+                <!-- <li class="header__nav-item nav__search">
                     <div class="nav__search-wrap">
                         <input class="nav__search-input" type="text" name="" id="" placeholder="Tìm sản phẩm...">
                     </div>
@@ -124,14 +171,20 @@
                 <li class="header__nav-item authen-form">
                     <a href="#" class="header__nav-link">Tài Khoản</a>
                     <ul class="sub-nav">
-                        <li class="sub-nav__item">
-                            <a href="#my-Login" class="sub-nav__link">Đăng Nhập</a>
-                        </li>
-                        <li class="sub-nav__item">
-                            <a href="#my-Register" class="sub-nav__link">Đăng Kí</a>
-                        </li>
+                        <?php if (!isset($_SESSION['username'])) { ?>
+                            <li class="sub-nav__item">
+                                <a href="#my-Login" class="sub-nav__link">Đăng Nhập</a>
+                            </li>
+                            <li class="sub-nav__item">
+                                <a href="#my-Register" class="sub-nav__link">Đăng Kí</a>
+                            </li>
+                        <?php } else { ?>
+                            <li class="sub-nav__item">
+                                <a class="sub-nav__link"><?php echo $username ?></a>
+                            </li>
+                        <?php } ?>
                     </ul>
-                </li>
+                </li> -->
                 <li class="header__nav-item index">
                     <a href="index.php" class="header__nav-link">Trang chủ</a>
                 </li>
@@ -144,13 +197,13 @@
                         <ul class="sub-nav">
                             <?php
                             include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
+
                             $sql1 = " select * from category";
                             $result = $conn->query($sql1);
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -161,7 +214,7 @@
                     <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>
@@ -173,7 +226,7 @@
                     <div class="col l-5 m-12 s-12">
                         <?php
                         include(".\assets\php\connect.php");
-                        $conn = mysqli_connect($host, $username, $password, $dbname);
+
                         $ID = $_GET["id"];
                         $sql = "select * from product where ID=$ID";
                         $result = $conn->query($sql);
@@ -233,30 +286,36 @@
                             <?php echo $row["name"] ?>
                         </h3>
                         <div class="productInfo__price">
-                            <?php echo number_format($row1["price"])?> <span class="priceInfo__unit">đ</span>
+                            <?php echo number_format($row["price"]) ?> <span class="priceInfo__unit">đ</span>
                         </div>
                         <div class="productInfo__description">
                             <span><?php echo $row["name"] ?></span> <?php echo $row["description"] ?>
                         </div>
 
                         <div class="productInfo__addToCart">
+                            <?php if ((isset($_SESSION['username']) && $_SESSION['username'])) { ?>
+                                <form action="addProduct.php?id=<?= $row["id"] ?>" method="POST">
+                                    <div class="buttons_added">
+                                        <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
+                                        <input aria-label="quantity" class="input-qty" max="<?= $row["quantity"] ?>" min="1" name="quantity" type="number" value="1">
+                                        <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                    </div>
+                                    <div class=" btn btn--default orange ">
+                                        <button class="va-add-to-cart"> Thêm vào giỏ</button>
+                                    </div>
+                                </form>
+                            <?php } else { ?>
 
-
-                            <form action="addProduct.php?id=<?= $row["id"] ?>" method="POST">
                                 <div class="buttons_added">
-                                    <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
+                                    <input class="minus is-form" type="button" value="-" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                                     <input aria-label="quantity" class="input-qty" max="10" min="1" name="quantity" type="number" value="1">
-                                    <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                    <input class="plus is-form" type="button" value="+" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                                 </div>
                                 <div class=" btn btn--default orange ">
-
-                                    <button>Thêm vào giỏ</button>
-
+                                    <a href="#my-Login" class="sub-nav__link"> Thêm vào giỏ</a>
                                 </div>
-                            </form>
 
-
-
+                            <?php } ?>
                         </div>
                         <div class="productIndfo__policy ">
                             <div class="policy bg-1 ">
@@ -681,55 +740,66 @@
     </div>
     <!-- Modal Form -->
     <div class="ModalForm ">
-        <div class="modal " id="my-Register ">
-            <a href="# " class="overlay-close "></a>
-            <div class="authen-modal register ">
-                <h3 class="authen-modal__title ">Đăng Kí</h3>
-                <div class="form-group ">
-                    <label for="account " class="form-label ">Họ Tên</label>
-                    <input id="account " name="account " type="text " class="form-control ">
-                    <span class="form-message ">Không hợp lệ !</span>
-                </div>
-                <div class="form-group ">
-                    <label for="password " class="form-label ">Tài khoản Email *</label>
-                    <input id="password " name="password " type="text " class="form-control ">
-                    <span class="form-message "></span>
-                </div>
-                <div class="form-group ">
-                    <label for="password " class="form-label ">Mật khẩu *</label>
-                    <input id="password " name="password " type="text " class="form-control ">
-                    <span class="form-message "></span>
-                </div>
-                <div class="form-group ">
-                    <label for="password " class="form-label ">Nhập lại mật khẩu *</label>
-                    <input id="password " name="password " type="text " class="form-control ">
-                    <span class="form-message "></span>
-                </div>
-                <div class="authen__btns ">
-                    <div class="btn btn--default ">Đăng Kí</div>
-                </div>
+        <div class="modal" id="my-Register">
+            <a href="#" class="overlay-close"></a>
+            <div class="authen-modal register">
+                <form method="POST" action="xulydangki.php">
+                    <h3 class="authen-modal__title">Đăng Kí</h3>
+                    <div class="form-group">
+                        <label for="account" class="form-label">Họ Tên</label>
+                        <input id="account" name="txtFullname" type="text" class="form-control">
+                        <span class="form-message">Không hợp lệ !</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Số điện thoại *</label>
+                        <input id="password" name="txtPhone" type="text" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="account" class="form-label">Tài khoản</label>
+                        <input id="account" name="txtUsername" type="text" class="form-control">
+                        <span class="form-message">Không hợp lệ !</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Mật khẩu *</label>
+                        <input id="password" name="txtPassword" type="text" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Nhập lại mật khẩu *</label>
+                        <input id="password" name="cfpassword" type="text" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <button>Đăng Kí</button>
+
+                </form>
             </div>
         </div>
-        <div class=" modal " id="my-Login ">
-            <a href="# " class="overlay-close "></a>
-            <div class="authen-modal login ">
-                <h3 class="authen-modal__title ">Đăng Nhập</h3>
-                <div class="form-group ">
-                    <label for="account " class="form-label ">Địa chỉ email *</label>
-                    <input id="account " name="account " type="text " class="form-control ">
-                    <span class="form-message ">Tài khoản không chính xác !</span>
-                </div>
-                <div class="form-group ">
-                    <label for="password " class="form-label ">Mật khẩu *</label>
-                    <input id="password " name="password " type="text" class="form-control ">
-                    <span class="form-message "></span>
-                </div>
-                <div class="authen__btns ">
-                    <div class="btn btn--default ">Đăng Nhập</div>
-                    <input type="checkbox " class="authen-checkbox ">
-                    <label class="form-label ">Ghi nhớ mật khẩu</label>
-                </div>
-                <a class="authen__link ">Quên mật khẩu ?</a>
+        <div class=" modal" id="my-Login">
+            <a href="#" class="overlay-close"></a>
+            <div class="authen-modal login">
+                <form action="xulydangnhap.php" method="POST">
+                    <h3 class="authen-modal__title">Đăng Nhập</h3>
+                    <div class="form-group">
+                        <label for="account" class="form-label">Tài khoản *</label>
+                        <input id="account" name="txtUsername" type="text" class="form-control">
+                        <span class="form-message">Tài khoản không chính xác !</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="form-label">Mật khẩu *</label>
+                        <input id="password" name="txtPassword" type="text" class="form-control">
+                        <span class="form-message"></span>
+                    </div>
+                    <div class="authen__btns">
+                        <button name="login">
+                            <div class="btn btn--default">Đăng Nhập</div>
+                        </button>
+                        <input type="checkbox" class="authen-checkbox">
+                        <label class="form-label">Ghi nhớ mật khẩu</label>
+                    </div>
+                    <a class="authen__link">Quên mật khẩu ?</a>
+                </form>
             </div>
         </div>
         <div class="up-top " id="upTop " onclick="goToTop() ">
@@ -872,5 +942,28 @@
         }
     </script>
 </body>
+<script>
+    let value = 1;
+    let maxProduct = 10;
+
+    function minusProduct() {
+        if (value > 1) {
+            value = isNaN(value) ? 1 : value;
+            value--;
+        }
+
+        document.querySelector('.input-qty').value = value;
+    }
+
+    function plusProduct() {
+        value = isNaN(value) ? 1 : value;
+        value++;
+        if (value > maxProduct) {
+            value = maxProduct;
+            alert('Số sản phẩm trong kho của shop đã đạt  giới hạn')
+        }
+        document.querySelector('.input-qty').value = value;
+    }
+</script>
 
 </html>

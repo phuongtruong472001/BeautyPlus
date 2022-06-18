@@ -67,10 +67,14 @@ session_start(); ?>
                         <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
-                                <div class="total-money"><a href="suathongtincanhanform.php">Sửa thông tin</a></div>
-                                <div class="total-money"><a href="hoadon.php">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="#">Lịch sử mua hàng</a></div>
                                 <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
-
+                                <!-- <ul class=”sub-menu”>
+                                <li class="item-order"><a href=”#”>Sửa thông tin</a></li>
+                                <li class="item-order"><a href=”#”>Lịch sử mua hàng</a></li>
+                                <li class="item-order"><a href=”#”>Đăng xuất</a></li>
+                            </ul> -->
 
                             </div>
                         </div>
@@ -103,6 +107,8 @@ session_start(); ?>
                             <ul class="order__list">
                                 <?php
                                 include(".\assets\php\connect.php");
+
+
                                 $sql = "select * from cart where user_id=$user_id";
                                 $result = $conn->query($sql);
                                 $sum = 0;
@@ -191,7 +197,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php?id=<?=$row["id"]?> " class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -203,7 +209,7 @@ session_start(); ?>
                     <a href="news.php" class="header__nav-link active">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>
@@ -262,7 +268,7 @@ session_start(); ?>
                 <!-- Tab items -->
                 <div class="tabs">
                     <div class="tab-item active">
-                        Bán Chạy
+                        Kết quả tìm kiếm
                     </div>
                 </div>
                 <!-- Tab content -->
@@ -271,83 +277,48 @@ session_start(); ?>
                         <div class="row">
                             <?php
                             include(".\assets\php\connect.php");
-                            $sql1 = " select * from product";
-                            $result = $conn->query($sql1);
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row["id"];
-
-                            ?>
-                                <div class="col l-2 m-4 s-6">
-                                    <div class="product">
-                                        <?php
-                                        $sql2 = "select * from image where product_id=$ID ";
-                                        $result2 = $conn->query($sql2);
-                                        $row2 = $result2->fetch_assoc(); ?>
-                                        <div class="product__avt" style="background-image: url(<?php echo $row2['link'] ?>);">
-                                        </div>
-                                        <div class="product__info">
-                                            <h3 class="product__name"><?php echo $row["name"] ?></h3>
-                                            <div class="product__price">
-                                                <div class="price__old">
-                                                    <?php echo number_format($row["price"]) ?>
+                            $search = addslashes($_POST['search']);
+                            if (empty($search)) {
+                                echo "Yeu cau nhap du lieu vao o trong";
+                            } else {
+                                $query = "SELECT * FROM product WHERE name LIKE '%$search%'";
+                                $sql = mysqli_query($conn, $query);
+                                $num = mysqli_num_rows($sql);
+                                if ($num > 0 && $search != "") {
+                                    while ($row = mysqli_fetch_assoc($sql)) { ?>
+                                        <div class="col l-2 m-4 s-6">
+                                            <div class="product">
+                                                <div class="product__avt" style="background-image: url(./assets/img/product/product5.jpg);">
                                                 </div>
-                                                <div class="price__new"><?php echo number_format($row["price"] * (100 - $row["disscount"]) / 100) ?> <span class="price__unit">đ</span></div>
-                                            </div>
-                                            <div class="product__sale">
-                                                <span class="product__sale-percent"><?php echo $row["disscount"]  ?>%</span>
-                                                <span class="product__sale-text">Giảm</span>
+                                                <div class="product__info">
+                                                    <h3 class="product__name"><?php echo $row["name"] ?></h3>
+                                                    <div class="product__price">
+                                                        <div class="price__old">
+                                                            <?php echo number_format($row["price"]) ?>
+                                                        </div>
+                                                        <div class="price__new"><?php echo number_format($row["price"] * (100 - $row["disscount"]) / 100) ?> <span class="price__unit">đ</span></div>
+                                                    </div>
+                                                    <div class="product__sale">
+                                                        <span class="product__sale-percent"><?php echo $row["disscount"]  ?>%</span>
+                                                        <span class="product__sale-text">Giảm</span>
+                                                    </div>
+                                                </div>
+                                                <a class="viewDetail" href="product.php?id=<?= $row["id"] ?>">Chi tiết</a>
+
                                             </div>
                                         </div>
-                                        <a class="viewDetail" href="product.php?id=<?= $row["id"] ?>">Chi tiết</a>
-
-                                    </div>
-                                </div>
-                            <?php } ?>
+                            <?php }
+                                } else {
+                                    echo "Khong tim thay ket qua!";
+                                }
+                            }
+                            ?>
                         </div>
 
                     </div>
                     <!-- HightLight  -->
                     <div class="main__frame">
-                        <div class="grid wide">
-                            <h3 class="category__title">Ngọc Ánh Cometics</h3>
-                            <h3 class="category__heading">SẢN PHẨM NỔI BẬT</h3>
-                            <div class="row">
-                                <?php
-                                include(".\assets\php\connect.php");
-                                $sql1 = " select * from product";
-                                $result = $conn->query($sql1);
-                                while ($row = $result->fetch_assoc()) {
-                                    $ID = $row["id"];
-                                ?>
-                                    <div class="col l-2 m-4 s-6">
-                                        <div class="product">
-                                            <?php
-                                            $sql2 = "select * from image where product_id=$ID ";
-                                            $result2 = $conn->query($sql2);
-                                            $row2 = $result2->fetch_assoc(); ?>
-                                            <div class="product__avt" style="background-image: url(<?php echo $row2['link'] ?>);">
-                                            </div>
-                                            <div class="product__info">
-                                                <h3 class="product__name"><?php echo $row["name"] ?></h3>
-                                                <div class="product__price">
-                                                    <div class="price__old">
-                                                        <?php echo number_format($row["price"]) ?>
-                                                    </div>
-                                                    <div class="price__new"><?php echo number_format($row["price"] * (100 - $row["disscount"]) / 100) ?> <span class="price__unit">đ</span></div>
-                                                </div>
-                                                <div class="product__sale">
-                                                    <span class="product__sale-percent"><?php echo $row["disscount"]  ?>%</span>
-                                                    <span class="product__sale-text">Giảm</span>
-                                                </div>
-                                            </div>
-                                            <a class="viewDetail" href="product.php?id=<?= $row["id"] ?>">chi tiết</a>
-                                            <!-- <a href="cart.php?ID=<?= $row["id"] ?>" class="addToCart">Thêm vào giỏ</a> -->
 
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                        </div>
                         <!-- Sales Policy -->
                         <div class="main__policy">
                             <div class="row">
@@ -402,17 +373,10 @@ session_start(); ?>
                                     $sql = "select * from news ";
                                     $result = $conn->query($sql);
                                     while ($row = $result->fetch_assoc()) {
-                                        $ID=$row["id"];
                                     ?>
                                         <a href="news.php" class="news">
-                                            <?php
-                                            $sql2 = "select * from image where news_id =$ID ";
-                                            $result2 = $conn->query($sql2);
-                                            $row2 = $result2->fetch_assoc(); ?>
-                                            <!-- <div class="product__avt" style="background-image: url(<?php echo $row2['link'] ?>);">
-                                            </div> -->
                                             <div class="news__img">
-                                                <img src="<?php echo $row2['link'] ?>" alt="">
+                                                <img src="./assets/img/news/news1.jpg" alt="">
                                             </div>
                                             <div class="news__body">
                                                 <h3 class="news__body-title"><?php echo $row["title"] ?></h3>

@@ -1,3 +1,5 @@
+<?php
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- https://cocoshop.vn/ -->
@@ -26,9 +28,43 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Owl caroucel Js-->
     <script src="assets/owlCarousel/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $(".dathang").click(function() {
+                $(".m-dialouge-background").show();
+            })
+            $('.redo').click(function() {
+                // $('.success, .error').toggle();
+                // window.alert("ok")
+                $('.m-dialouge-background').hide();
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="./dialouge.css">
 </head>
 
 <body>
+    <div class="m-dialouge-background" style="display: none;">
+        <div class="m-container">
+            <div class="row">
+                <div class="modalbox success col-sm-8 col-md-6 col-lg-5 center animate">
+                    <div class="icon">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </div>
+                    <!--/.icon-->
+                    <p>Bạn đã thanh toán thành công
+                    </p>
+                    <form action="xulythanhtoan.php" method="POST">
+                        <button type="submit" class="redo btn">Ok</button>
+                    </form>
+                </div>
+                <!--/.success-->
+            </div>
+            <!--/.row-->
+
+        </div>
+    </div>
     <div class="header scrolling" id="myHeader">
         <div class="grid wide">
             <div class="header__top">
@@ -49,60 +85,95 @@
                     </div>
                 </div>
                 <div class="header__account">
-                    <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
-                    <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php
+                    if (isset($_SESSION['username']) && $_SESSION['username']) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username ='$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                    ?>
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                            <!-- --------------------menu doc----------------- -->
+                            <div class="header__cart-wrap">
+                                <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="#">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
+
+
+                            </div>
+                        </div>
+                    <?php } else { ?>
+                        <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
+                        <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php } ?>
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
                     <?php
-                    include(".\assets\php\connect.php");
-                    $conn = mysqli_connect($host, $username, $password, $dbname);
-                    $sql = "select * from cart";
-                    $result = $conn->query($sql);
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        $user_id = $row['id'];
+                        $sql = "select * from cart where user_id=$user_id";
+                        $result = $conn->query($sql);
 
                     ?>
-                    <i class="fas fa-shopping-basket"></i>
-                    <div class="header__cart-amount">
-                        <?php echo $result->num_rows ?>
-                    </div>
-                    <div class="header__cart-wrap">
-                        <ul class="order__list">
-                            <?php
-                            include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
-                            $sql = "select * from cart ";
-                            $result = $conn->query($sql);
-                            $sum=0;
-                            while ($row = $result->fetch_assoc()) {
-                                $ID = $row['product_id'];
-                                $sql1 = "select * from cart inner join product where id=$ID";
-                                $result1 = $conn->query($sql1);
-                                $row1 = $result1->fetch_assoc();
-                                $ThanhTien = $row['quantity'] * $row1['price'];
-                                $sum+=$ThanhTien;
-                            ?>
-                                <li class="item-order">
-                                    <div class="order-wrap">
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                            <img src="./assets/img/product/product1.jpg" alt="">
-                                        </a>
-                                        <div class="order-main">
-                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                            <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <?php echo $result->num_rows ?>
+                        </div>
+                        <div class="header__cart-wrap">
+                            <ul class="order__list">
+                                <?php
+                                include(".\assets\php\connect.php");
+                                
+
+                                $sql = "select * from cart where user_id=$user_id";
+                                $result = $conn->query($sql);
+                                $sum = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                    $ID = $row['product_id'];
+                                    $sql1 = "select * from cart inner join product where id=$ID";
+                                    $result1 = $conn->query($sql1);
+                                    $row1 = $result1->fetch_assoc();
+                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $sum += $ThanhTien;
+                                ?>
+                                    <li class="item-order">
+                                        <div class="order-wrap">
+                                        <?php
+                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $result2 = $conn->query($sql2);
+                                            $row2 = $result2->fetch_assoc(); ?>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+                                               
+                                                <img src="<?php echo $row2['link'] ?>" alt="">
+                                            </a>
+                                            <div class="order-main">
+                                                <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                            </div>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
-                                        <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
-                                    </div>
 
-                                </li>
-                            <?php } ?>
+                                    </li>
+                                <?php } ?>
 
-                        </ul>
-                        <div class="total-money">Tổng cộng: <?php echo number_format($sum)?> đ</div>
-                        <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
-                        <!-- norcart -->
-                        <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-                    </div>
+                            </ul>
+                            <div class="total-money">Tổng cộng: <?php echo number_format($sum) ?></div>
+                            <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                            <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        </div>
+                    <?php } else { ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <a href="#my-Login"> 0</a>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -138,27 +209,27 @@
                     <a href="#" class="header__nav-link">Sản Phẩm</a>
                     <div class="sub-nav-wrap grid wide">
                         <ul class="sub-nav">
-                        <?php
+                            <?php
                             include(".\assets\php\connect.php");
-                            $conn = mysqli_connect($host, $username, $password, $dbname);
+
                             $sql1 = " select * from category";
                             $result = $conn->query($sql1);
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
                         </ul>
-                        
+
                     </div>
                 </li>
                 <li class="header__nav-item">
                     <a href="news.php" class="header__nav-link">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>
@@ -203,52 +274,61 @@
                 <div class="col l-5 m-12 s-12">
                     <div class="pay-order">
                         <div class="pay__heading">Đơn hàng của bạn</div>
-                        <div class="pay-info">
-                            <div class="main__pay-text">
-                                Azrouel dress variable</div>
-                            <div class="main__pay-price">
-                                1,120,000 ₫
-                            </div>
-                        </div>
-                        <div class="pay-info">
-                            <div class="main__pay-text">
-                                Azrouel dress variable </div>
-                            <div class="main__pay-amount">
-                                3
-                            </div>
-                            <div class="main__pay-price">
-                                1,120,000 ₫
-                            </div>
-                        </div>
-                        <div class="pay-info">
-                            <div class="main__pay-text">
-                                Azrouel dress variable </div>
-                            <div class="main__pay-price">
-                                1,120,000 ₫
-                            </div>
-                        </div>
-                        <div class="pay-info">
-                            <div class="main__pay-text special">
-                                Giao hàng
-                            </div>
-                            <div class="main__pay-text">
-                                Giao hàng miễn phí
-                            </div>
+                        <?php
+                        include(".\assets\php\connect.php");
 
-                        </div>
-                        <div class="pay-info">
-                            <div class="main__pay-text special">
-                                Tổng thành tiền</div>
-                            <div class="main__pay-price">
-                                1,120,000 ₫
+                        $sql = "select * from cart ";
+                        $result = $conn->query($sql);
+                        $sum = 0;
+                        while ($row = $result->fetch_assoc()) {
+                            $ID = $row['product_id'];
+                            $sql1 = "select * from cart inner join product where id=$ID";
+                            $result1 = $conn->query($sql1);
+                            $row1 = $result1->fetch_assoc();
+                            $ThanhTien = $row['quantity'] * $row1['price'];
+                            $sum += $ThanhTien;
+                        ?>
+                            <div class="pay-info">
+                                <div class="main__pay-text"><a class="order-main-name">
+                                        <?php echo $row1["name"] ?></a> </div>
+                                <div class="main__pay-amount">
+
+                                    <?php echo $row["quantity"] ?>
+                                </div>
+                                <div class="main__pay-price">
+                                    <?php echo number_format($row1["price"]) ?> ₫
+                                </div>
                             </div>
+                        <?php } ?>
+                    </div>
+                    <div class="pay-info">
+                        <div class="main__pay-text special">
+                            Giao hàng
                         </div>
-                        <div class="btn btn--default">Đặt hàng</div>
+                        <div class="main__pay-text">
+                            Giao hàng miễn phí
+                        </div>
+
+                    </div>
+                    <div class="pay-info">
+                        <div class="main__pay-text special">
+                            Tổng thành tiền</div>
+                        <div class="main__pay-price">
+
+                            <?php echo number_format($sum) ?> ₫
+                        </div>
                     </div>
 
+                    <div class="btn btn--default"><button class="dathang">Đặt hàng</button></div>
+
                 </div>
+
+
+
+
             </div>
         </div>
+    </div>
     </div>
     <div class="footer">
         <div class="grid wide">
@@ -295,8 +375,8 @@
                     <ul class="footer__list">
                         <li class="footer__item">
                             <span class="footer__text">
-                                    <i class="fas fa-map-marked-alt"></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
-                                </span>
+                                <i class="fas fa-map-marked-alt"></i> 319 C16 Lý Thường Kiệt, Phường 15, Quận 11, Tp.HCM
+                            </span>
                         </li>
                         <li class="footer__item">
                             <a href="#" class="footer__link">
@@ -311,15 +391,15 @@
                         <li class="footer__item">
                             <div class="social-group">
                                 <a href="#" class="social-item"><i class="fab fa-facebook-f"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-twitter"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-pinterest-p"></i>
-                                    </a>
+                                </a>
                                 <a href="#" class="social-item"><i class="fab fa-invision"></i>
-                                    </a>
-                                <a href="#" class="social-item"><i class="fab fa-youtube"></i>  
-                                    </a>
+                                </a>
+                                <a href="#" class="social-item"><i class="fab fa-youtube"></i>
+                                </a>
                             </div>
                         </li>
                     </ul>

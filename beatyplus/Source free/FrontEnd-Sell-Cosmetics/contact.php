@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <div class="header scrolling" id="myHeader">
+<div class="header scrolling" id="myHeader">
         <div class="grid wide">
             <div class="header__top">
                 <div class="navbar-icon">
@@ -41,68 +41,112 @@
                     <img src="./assets/logo.png" alt="">
                 </a>
                 <div class="header__search">
-                    <div class="header__search-wrap">
-                        <input type="text" class="header__search-input" placeholder="Tìm kiếm">
-                        <a class="header__search-icon" href="#">
-                            <i class="fas fa-search"></i>
-                        </a>
-                    </div>
+                    <form id="myform" method="POST" action="timkiem.php">
+                        <div class="header__search-wrap">
+                            <input type="text" class="header__search-input" placeholder="Tìm kiếm" name="search">
+                            <!-- <a class="header__search-icon" href="">
+                                <i class="fas fa-search"></i>
+                            </a> -->
+                            <a class="header__search-icon" href="javascript:void()" onclick="document.getElementById('myform').submit();">
+                                <i class="fas fa-search"></i>
+                            </a>
+                        </div>
+                    </form>
                 </div>
                 <div class="header__account">
-                    <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
-                    <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php
+                    if (isset($_SESSION['username']) && $_SESSION['username']) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username ='$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                    ?>
+
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                            <!-- --------------------menu doc----------------- -->
+                            <div class="header__cart-wrap">
+                                <div class="total-money"><a href="suathongtincanhanform.php">Sửa thông tin</a></div>
+                                <div class="total-money"><a href="hoadon.php">Lịch sử mua hàng</a></div>
+                                <div class="total-money"><a href="xulydangxuat.php">Đăng xuất</a></div>
+
+
+                            </div>
+                        </div>
+
+                    <?php } else { ?>
+                        <a href="#my-Login" class="header__account-login">Đăng Nhập</a>
+                        <a href="#my-Register" class="header__account-register">Đăng Kí</a>
+                    <?php } ?>
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
-                    <i class="fas fa-shopping-basket"></i>
-                    <div class="header__cart-amount">
-                        3
-                    </div>
-                    <div class="header__cart-wrap">
-                        <ul class="order__list">
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                            <li class="item-order">
-                                <div class="order-wrap">
-                                    <a href="product.html" class="order-img">
-                                        <img src="./assets/img/product/product1.jpg" alt="">
-                                    </a>
-                                    <div class="order-main">
-                                        <a href="product.html" class="order-main-name">Áo sơ mi  caro kèm belt caro kèm belt Áo sơ mi caro kèm belt</a>
-                                        <div class="order-main-price">2 x 45,000 ₫</div>
-                                    </div>
-                                    <a href="product.html" class="order-close"><i class="far fa-times-circle"></i></a>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="total-money">Tổng cộng: 120.000đ</div>
-                        <a href="cart.html" class="btn btn--default cart-btn">Xem giỏ hàng</a>
-                        <a href="pay.html" class="btn btn--default cart-btn orange">Thanh toán</a>
-                        <!-- norcart -->
-                        <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-                    </div>
+
+                    <?php
+                    if ((isset($_SESSION['username']) && $_SESSION['username'])) {
+                        include(".\assets\php\connect.php");
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        $user_id = $row['id'];
+                        $sql = "select * from cart where user_id=$user_id";
+                        $result = $conn->query($sql);
+
+                    ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <?php echo $result->num_rows ?>
+                        </div>
+                        <div class="header__cart-wrap">
+                            <ul class="order__list">
+                                <?php
+                                include(".\assets\php\connect.php");
+                                $sql = "select * from cart where user_id=$user_id";
+                                $result = $conn->query($sql);
+                                $sum = 0;
+                                while ($row = $result->fetch_assoc()) {
+                                    $ID = $row['product_id'];
+                                    $sql1 = "select * from cart inner join product where id=$ID";
+                                    $result1 = $conn->query($sql1);
+                                    $row1 = $result1->fetch_assoc();
+                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $sum += $ThanhTien;
+                                ?>
+                                    <li class="item-order">
+                                        <div class="order-wrap">
+                                            <?php
+                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $result2 = $conn->query($sql2);
+                                            $row2 = $result2->fetch_assoc(); ?>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
+
+                                                <img src="<?php echo $row2['link'] ?>" alt="">
+                                            </a>
+                                            <div class="order-main">
+                                                <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                            </div>
+                                            <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
+                                        </div>
+
+                                    </li>
+                                <?php } ?>
+
+                            </ul>
+                            <div class="total-money">Tổng cộng: <?php echo number_format($sum) ?></div>
+                            <a href="cart.php" class="btn btn--default cart-btn">Xem giỏ hàng</a>
+                            <a href="pay.php" class="btn btn--default cart-btn orange">Thanh toán</a>
+                        </div>
+                    <?php } else { ?>
+                        <i class="fas fa-shopping-basket"></i>
+                        <div class="header__cart-amount">
+                            <a href="#my-Login"> 0</a>
+                        </div>
+                    <?php } ?>
+                    <!-- norcart -->
+                    <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
+
                 </div>
             </div>
         </div>
@@ -129,101 +173,36 @@
                     </ul>
                 </li>
                 <li class="header__nav-item index">
-                    <a href="index.html" class="header__nav-link">Trang chủ</a>
+                    <a type="submit" href="index.php" class="header__nav-link active">Trang chủ</a>
+
                 </li>
                 <li class="header__nav-item">
-                    <a href="#" class="header__nav-link">Giới Thiệu</a>
+                    <a href="index.php" class="header__nav-link">Giới Thiệu</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="#" class="header__nav-link">Sản Phẩm</a>
+                    <a href="listProduct.php" class="header__nav-link ">Sản Phẩm</a>
                     <div class="sub-nav-wrap grid wide">
                         <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $sql1 = " select * from category";
+                            $result = $conn->query($sql1);
+                            while ($row = $result->fetch_assoc()) { ?>
+
+                                <li class="sub-nav__item">
+                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                </li>
+
+                            <?php } ?>
                         </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
-                        <ul class="sub-nav">
-                            <li class="sub-nav__item">
-                                <a href="" class="sub-nav__link heading">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc toàn thân vvv</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Khuyến mãi</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc cơ thể</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Nước hoa</a>
-                            </li>
-                            <li class="sub-nav__item">
-                                <a href="listProduct.html" class="sub-nav__link">Chăm sóc miệng</a>
-                            </li>
-                        </ul>
+
                     </div>
                 </li>
                 <li class="header__nav-item">
-                    <a href="news.html" class="header__nav-link">Tin Tức</a>
+                    <a href="news.php" class="header__nav-link active">Tin Tức</a>
                 </li>
                 <li class="header__nav-item">
-                    <a href="contact.html" class="header__nav-link">Liên Hệ</a>
+                    <a href="contact.php" class="header__nav-link">Liên Hệ</a>
                 </li>
             </ul>
         </div>
