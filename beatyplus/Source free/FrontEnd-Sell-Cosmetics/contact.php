@@ -1,3 +1,5 @@
+<?php
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <!-- https://cocoshop.vn/ -->
@@ -81,7 +83,6 @@
                 </div>
                 <!-- Cart -->
                 <div class="header__cart have" href="#">
-
                     <?php
                     if ((isset($_SESSION['username']) && $_SESSION['username'])) {
                         include(".\assets\php\connect.php");
@@ -102,6 +103,8 @@
                             <ul class="order__list">
                                 <?php
                                 include(".\assets\php\connect.php");
+
+
                                 $sql = "select * from cart where user_id=$user_id";
                                 $result = $conn->query($sql);
                                 $sum = 0;
@@ -116,7 +119,7 @@
                                     <li class="item-order">
                                         <div class="order-wrap">
                                             <?php
-                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $sql2 = "select * from image where product_id=$ID ";
                                             $result2 = $conn->query($sql2);
                                             $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
@@ -144,9 +147,6 @@
                             <a href="#my-Login"> 0</a>
                         </div>
                     <?php } ?>
-                    <!-- norcart -->
-                    <!-- <img class="header__cart-img-nocart" src="http://www.giaybinhduong.com/images/empty-cart.png" alt=""> -->
-
                 </div>
             </div>
         </div>
@@ -190,7 +190,7 @@
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
