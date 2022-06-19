@@ -238,7 +238,9 @@ session_start(); ?>
                         $sql = "select * from cart where user_id=$user_id";
                         $result = $conn->query($sql);
                         $sum = 0;
+                        $index = 1;
                         while ($row = $result->fetch_assoc()) {
+                            $index++;
                             $ID = $row['product_id'];
                             $sql1 = "select * from cart inner join product where id=$ID";
                             $result1 = $conn->query($sql1);
@@ -256,17 +258,18 @@ session_start(); ?>
                                         </div>
                                     </div>
                                     <div class="col l-2 m-2 s-0">
-                                        <div class="main__cart-price"><?php echo number_format($row1["price"]) ?></div>
+                                        <div class="main__cart-price m-price"><?php echo number_format($row1["price"]) ?></div>
                                     </div>
                                     <div class="col l-2 m-2 s-0">
                                         <div class="buttons_added">
-                                            <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                            <input aria-label="quantity" class="input-qty" max="10" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
-                                            <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
+                                            <input class="minus is-form" type="button" value="-" onclick="minusProduct(<?=$index?>, <?= $row1['price']?>)">
+                                            
+                                            <input aria-label="quantity" class=<?php echo "input-qty-$index" ?> max="10" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
+                                            <input class="plus is-form" type="button" value="+" onclick="plusProduct(<?=$index?>,<?= $row1['price']?>)">
                                         </div>
                                     </div>
                                     <div class="col l-2 m-2 s-4">
-                                        <div class="main__cart-price"> <?php echo number_format($ThanhTien) ?> đ</div>
+                                        <div class="main__cart-price"> <span class=<?php echo "total-price-$index" ?>>  <?php echo  $row1['price']?> </span>  <span>đ</span></div>
                                     </div>
 
                                     <div class="col l-1 m-1 s-0">
@@ -290,7 +293,7 @@ session_start(); ?>
                         <div class="pay-info">
                             <div class="main__pay-text">
                                 Tổng phụ</div>
-                            <div class="main__pay-price">
+                            <div class="main__pay-price m-main-pay-1">
                                 <?php echo number_format($sum) ?> ₫
                             </div>
                         </div>
@@ -485,25 +488,48 @@ session_start(); ?>
 <script src="./assets/js/commonscript.js"></script>
 <script>
     let value = 1;
-    let maxProduct = 10;
+    let maxProduct =10 ;
 
-    function minusProduct() {
+    function minusProduct(index,price) {
+        
         if (value > 1) {
             value = isNaN(value) ? 1 : value;
             value--;
         }
 
-        document.querySelector('.input-qty').value = value;
+        document.querySelector(`.total-price-${index}`).innerHTML=(value*price)+"";
+        document.querySelector(`.input-qty-${index}`).value = value;
+        
     }
 
-    function plusProduct() {
+    function plusProduct(index,price) {
+      
         value = isNaN(value) ? 1 : value;
         value++;
         if (value > maxProduct) {
             value = maxProduct;
             alert('Số sản phẩm trong kho của shop đã đạt  giới hạn')
         }
-        document.querySelector('.input-qty').value = value;
+        document.querySelector(`.total-price-${index}`).innerHTML=(value*price)+"";
+        document.querySelector(`.input-qty-${index}`).value = value;
+        // console.log(document.querySelector('.m-main-pay-1'))
+        // // const element = document.querySelectorAll('.total-price');
+        // console.log(element);
+        const total =callTotalPrice('.input-qty-2',".m-price");
+        //console.log(total);
+    }
+
+    function callTotalPrice(calssQuantity, classPrice){
+        const prices = $(classPrice);
+        const quantitys = $(calssQuantity);
+        let total=0;
+        for(let i=0;i<prices.length;i++){
+          
+           const quantity = parseFloat( $(quantitys[i]).val());
+           const price =parseFloat($(prices[i]).text().replace(",",""));
+           console.log(quantity)
+        }
+        return total;
     }
 </script>
 

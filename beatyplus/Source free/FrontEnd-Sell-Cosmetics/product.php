@@ -32,11 +32,12 @@ session_start();
 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
     <style>
-        .black-color{
+        .black-color {
             color: black;
         }
-        .black-color:hover{
-            color:black !important;
+
+        .black-color:hover {
+            color: black !important;
         }
     </style>
 
@@ -210,7 +211,7 @@ session_start();
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?= $row["id"] ?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -302,11 +303,6 @@ session_start();
                         <div class="productInfo__addToCart">
                             <?php if ((isset($_SESSION['username']) && $_SESSION['username'])) { ?>
                                 <form action="addProduct.php?id=<?= $row["id"] ?>" method="POST">
-                                    <div class="buttons_added">
-                                        <input class="minus is-form" type="button" value="-" onclick="minusProduct()">
-                                        <input aria-label="quantity" class="input-qty" max="<?= $row["quantity"] ?>" min="1" name="quantity" type="number" value="1">
-                                        <input class="plus is-form" type="button" value="+" onclick="plusProduct()">
-                                    </div>
                                     <div class=" btn btn--default orange ">
                                         <button class="va-add-to-cart"> Thêm vào giỏ</button>
                                     </div>
@@ -949,28 +945,6 @@ session_start();
         }
     </script>
 </body>
-<script>
-    let value = 1;
-    let maxProduct = 10;
 
-    function minusProduct() {
-        if (value > 1) {
-            value = isNaN(value) ? 1 : value;
-            value--;
-        }
-
-        document.querySelector('.input-qty').value = value;
-    }
-
-    function plusProduct() {
-        value = isNaN(value) ? 1 : value;
-        value++;
-        if (value > maxProduct) {
-            value = maxProduct;
-            alert('Số sản phẩm trong kho của shop đã đạt  giới hạn')
-        }
-        document.querySelector('.input-qty').value = value;
-    }
-</script>
 
 </html>

@@ -37,7 +37,8 @@ const data = [{
     height: 18,
     position: "-206px -1631px",
     activePosition: "-206px -1588px",
-    title: "Thống kê"
+    title: "Thống kê",
+    url:"statistical.php"
 },
 {
     width: 14,
