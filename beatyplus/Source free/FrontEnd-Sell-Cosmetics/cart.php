@@ -6,6 +6,14 @@ session_start(); ?>
 <!-- http://mauweb.monamedia.net/vanihome/ -->
 
 <head>
+    <style>
+    .black-color{
+            color: black !important;
+        }
+        .black-color:hover{
+            color:black !important;
+        } 
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,7 +72,7 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
@@ -115,7 +123,7 @@ session_start(); ?>
                                     <li class="item-order">
                                         <div class="order-wrap">
                                             <?php
-                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $sql2 = "select * from image where product_id=$ID ";
                                             $result2 = $conn->query($sql2);
                                             $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
@@ -186,7 +194,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.html" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>

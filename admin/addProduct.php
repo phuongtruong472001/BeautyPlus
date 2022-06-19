@@ -5,7 +5,7 @@
         $category_id = $_POST['category'];
         $quantity = $_POST['quantity'];
         $disscount = $_POST['disscount'];
-        $branch = $_POST['branch'];
+        $brand = $_POST['brand'];
         $description = $_POST['description'];
         $price = $_POST['price'];
 
@@ -17,7 +17,7 @@
         }else{
             // insert data
             $sql = "INSERT INTO product (name, category_id, price, quantity, sold, disscount, brand, description)
-            VALUES ('$name', $category_id, $price, $quantity, 0, $disscount, '$branch', '$description')";
+            VALUES ('$name', $category_id, $price, $quantity, 0, $disscount, '$brand', '$description')";
             if($conn->query($sql)===TRUE){
                 echo "<script>
                     alert(\"Tạo sản phẩm mới thành công\");

@@ -31,7 +31,14 @@ session_start();
     <script src="assets/owlCarousel/owl.carousel.min.js"></script>
 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
-
+    <style>
+        .black-color{
+            color: black;
+        }
+        .black-color:hover{
+            color:black !important;
+        }
+    </style>
 
 </head>
 
@@ -73,7 +80,7 @@ session_start();
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
@@ -125,12 +132,12 @@ session_start();
                                 ?>
                                     <li class="item-order">
                                         <div class="order-wrap">
-                                        <?php
-                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            <?php
+                                            $sql2 = "select * from image where product_id=$ID ";
                                             $result2 = $conn->query($sql2);
                                             $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                               
+
                                                 <img src="<?php echo $row2['link'] ?>" alt="">
                                             </a>
                                             <div class="order-main">
@@ -203,7 +210,7 @@ session_start();
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -279,7 +286,7 @@ session_start();
                                 <a href="#" class="breadcrumb__link">Cửa hàng</a>
                             </div>
                             <div class="breadcrumb__item">
-                                <a href="#" class="breadcrumb__link"><?php echo $row["branch"] ?></a>
+                                <a href="#" class="breadcrumb__link"><?php echo $row["brand"] ?></a>
                             </div>
                         </div>
                         <h3 class="productInfo__name">
@@ -349,7 +356,7 @@ session_start();
                         </div>
                         <div class="productIndfo__category ">
                             <p class="productIndfo__category-text"> Danh mục : <a href="# " class="productIndfo__category-link ">Nail</a></p>
-                            <p class="productIndfo__category-text"> Hãng : <a href="# " class="productIndfo__category-link "><?php echo $row["branch"] ?></a></p>
+                            <p class="productIndfo__category-text"> Hãng : <a href="# " class="productIndfo__category-link "><?php echo $row["brand"] ?></a></p>
                             <p class="productIndfo__category-text"> Số lượng đã bán : <?php echo $row["sold"] ?></p>
                             <p class="productIndfo__category-text"> Số lượng trong kho : <?php echo $row["quantity"] ?></p>
 

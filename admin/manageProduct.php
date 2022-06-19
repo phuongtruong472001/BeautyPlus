@@ -42,7 +42,7 @@
                 Khuyến mãi: <br>
                 <input type="text" name="disscount" required value="0"><br>
                 Thương hiệu: <br>
-                <input type="text" name="branch"><br>
+                <input type="text" name="brand"><br>
                 Mô tả: <br>
                 <input type="text" name="description"><br>
                 <br>

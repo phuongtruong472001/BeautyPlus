@@ -117,7 +117,7 @@ session_start(); ?>
                                     <li class="item-order">
                                         <div class="order-wrap">
                                             <?php
-                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            $sql2 = "select * from image where product_id=$ID ";
                                             $result2 = $conn->query($sql2);
                                             $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">

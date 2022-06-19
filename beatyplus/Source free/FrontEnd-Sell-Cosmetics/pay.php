@@ -145,12 +145,12 @@ session_start(); ?>
                                 ?>
                                     <li class="item-order">
                                         <div class="order-wrap">
-                                        <?php
-                                            $sql2 = "select * from image where product_id=$ID and id=(select MAX(id) from image)";
+                                            <?php
+                                            $sql2 = "select * from image where product_id=$ID ";
                                             $result2 = $conn->query($sql2);
                                             $row2 = $result2->fetch_assoc(); ?>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-img">
-                                               
+
                                                 <img src="<?php echo $row2['link'] ?>" alt="">
                                             </a>
                                             <div class="order-main">
@@ -217,7 +217,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
