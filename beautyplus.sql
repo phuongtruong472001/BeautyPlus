@@ -54,7 +54,12 @@ create table bill(
     user_id int,
     created datetime default current_timestamp,
     total int,
-    status varchar(20),
+    status varchar(50),
+    name varchar(100) not null,
+    address varchar(200),
+    phone varchar(15),
+    email varchar(100),
+    note text,
     foreign key (user_id) references user(id) on delete set null
 );
 
@@ -62,6 +67,7 @@ create table bill_product(
 	bill_id int not null,
     product_id int not null,
     quantity int,
+    price int,
     primary key (bill_id, product_id)
 );
 
