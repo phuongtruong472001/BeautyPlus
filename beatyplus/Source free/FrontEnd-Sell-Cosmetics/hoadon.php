@@ -276,7 +276,7 @@ session_start(); ?>
                     <?php
                     include(".\assets\php\connect.php");
                     $user_id = $_SESSION['user_id'];
-                    $sql = "select * from bill where user_id =$user_id"; //lấy ra các bill của người dùng
+                    $sql = "SELECT * from bill where user_id =$user_id ORDER BY created DESC"; //lấy ra các bill của người dùng
                     $result = $conn->query($sql);
                     if ($result->num_rows == 0) {
                         echo "bạn chưa đặt đơn hàng nào !";
