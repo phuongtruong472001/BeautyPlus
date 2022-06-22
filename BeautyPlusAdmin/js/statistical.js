@@ -33,7 +33,7 @@ class Statistical {
             </div>
             <div class="m-table-footer">
                 <div>Tổng số: <span class="m-total-news">0</span> bản ghi</div>
-                <div>Tổng doanh thu: <span class="m-total-revenue">0</span> VND</div>
+                <div>Tổng doanh thu: <span class="m-total-revenue">0</span></div>
             </div>
         `)
         const currentDate = new Date();
@@ -80,6 +80,7 @@ class Statistical {
             const cur=totalRevenue + value.BillProductPrice*value.BillProductQuantity;
             totalRevenue = totalRevenue + cur?cur:0;
         });
+        totalRevenue=totalRevenue.toLocaleString('vi', {style : 'currency', currency : 'VND'});
         $('.m-total-news').text(arr.length + "");
         $('.m-total-revenue').text(totalRevenue);
 
