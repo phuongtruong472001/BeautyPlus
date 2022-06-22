@@ -35,6 +35,10 @@ include_once('connectDB.php');
     $disscount = $rs['disscount'];
     $brand = $rs['brand'];
     $description = $rs['description'];
+    $status = $rs['status'];
+
+    $sql = "SELECT link from image WHERE product_id=$id";
+    $link = $conn->query($sql)->fetch_assoc()['link'];
     ?>
 
     <div class="container">
@@ -47,37 +51,8 @@ include_once('connectDB.php');
             <div class="menu-item-list scroll-bar"></div>
         </div>
         <div class="main" style="width: 624px;">
-            <div class="header">
-                <div class="h-bars">
-                    <div></div>
-                </div>
-                <div class="h-brands">
-                    <div class="h-brand-name">
-                        <p>BEAUTY PLUS</p>
-                    </div>
-                    <div class="h-dropdown">
-                        <div></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="h-current-db">
-                        <div class="icon-header-current-db"></div>
-                        <div class="header-current-db-name">DC-02</div>
-                    </div>
-                </div>
-                <div class="download-process">
-                    <div class="icon-download-process">
+            <?php include('header.php') ?>
 
-                    </div>
-                </div>
-                <div class="h-search">
-
-                    <div class="m-icon-input">
-                        <div></div>
-                        <input placeholder="Nhập từ khoá tìm kiểm" type="text" class="h-input m-input">
-                    </div>
-                </div>
-            </div>
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
@@ -91,11 +66,6 @@ include_once('connectDB.php');
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
                                     Thông tin sản phẩm
-                                </div>
-                                <div class="m-form-close">
-                                    <div class="md-close">
-                                        <div class="md-close-icon"></div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="m-form-content">
@@ -147,6 +117,17 @@ include_once('connectDB.php');
                                     <div class="m-news-input">
                                         <label for="">Mô tả</label>
                                         <input name="description" type="text" value="<?=$description?>">
+                                    </div>
+                                    <div class="m-news-input">
+                                        <label for="">link ảnh</label>
+                                        <input name="link" type="text" value="<?=$link?>">
+                                    </div>
+                                    <div class="m-news-input">
+                                        <label for="">Trạng thái</label>
+                                        <select name="status">
+                                            <option value="ban"<?php if($status=="ban") echo "selected" ?>>bán</option>
+                                            <option value="ngung_ban"<?php if($status=="ngung_ban") echo "selected" ?>>ngừng bán</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

@@ -41,37 +41,8 @@ include_once('connectDB.php');
             <div class="menu-item-list scroll-bar"></div>
         </div>
         <div class="main" style="width: 624px;">
-            <div class="header">
-                <div class="h-bars">
-                    <div></div>
-                </div>
-                <div class="h-brands">
-                    <div class="h-brand-name">
-                        <p>BEAUTY PLUS</p>
-                    </div>
-                    <div class="h-dropdown">
-                        <div></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="h-current-db">
-                        <div class="icon-header-current-db"></div>
-                        <div class="header-current-db-name">DC-02</div>
-                    </div>
-                </div>
-                <div class="download-process">
-                    <div class="icon-download-process">
-
-                    </div>
-                </div>
-                <div class="h-search">
-
-                    <div class="m-icon-input">
-                        <div></div>
-                        <input placeholder="Nhập từ khoá tìm kiểm" type="text" class="h-input m-input">
-                    </div>
-                </div>
-            </div>
+            <?php include('header.php') ?>
+            
 
             <div class="content">
                 <div class="title-distance" style="width: 611.594px;">
@@ -85,11 +56,6 @@ include_once('connectDB.php');
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
                                     Thông tin danh mục
-                                </div>
-                                <div class="m-form-close">
-                                    <div class="md-close">
-                                        <div class="md-close-icon"></div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="m-form-content">

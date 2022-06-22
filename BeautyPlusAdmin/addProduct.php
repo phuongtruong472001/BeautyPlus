@@ -15,6 +15,7 @@
         $brand = $_POST['brand'];
         $description = $_POST['description'];
         $price = $_POST['price'];
+        $link = $_POST['link'];
 
         if(empty($name) || empty($price+1) || empty($category_id+1) || empty($quantity+1) || empty($disscount+1)){
             echo "<script>
@@ -23,13 +24,24 @@
             </script>";
         }else{
             // insert data
-            $sql = "INSERT INTO product (name, category_id, price, quantity, sold, disscount, brand, description)
-            VALUES ('$name', $category_id, $price, $quantity, 0, $disscount, '$brand', '$description')";
+            $sql = "INSERT INTO product (name, category_id, price, quantity, sold, disscount, brand, description, status)
+            VALUES ('$name', $category_id, $price, $quantity, 0, $disscount, '$brand', '$description', 'ban')";
             if($conn->query($sql)===TRUE){
-                echo "<script>
+                //insert image
+                $sql = "SELECT MAX(id) as rs FROM product";
+                $id = $conn->query($sql)->fetch_assoc()['rs'];
+                $sql = "INSERT INTO image(link, product_id) VALUES('$link', $id)";
+                if($conn->query($sql)===TRUE){
+                    echo "<script>
                     alert(\"Tạo sản phẩm mới thành công\");
                     window.location = '././manageProduct.php';
-                </script>";
+                    </script>";
+                }else{
+                    echo "<script>
+                    alert(\"Lỗi $conn->error\");
+                    window.location = '././manageProduct.php';
+                    </script>";
+                }
             }else{
                 echo "<script>
                     alert(\"Lỗi $conn->error\");
