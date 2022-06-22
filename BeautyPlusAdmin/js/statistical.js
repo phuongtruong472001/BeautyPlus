@@ -1,10 +1,9 @@
-
 $(window).on('load', function () {
-    // new PRODUCT('.m-table-product-wrapper');
-    new CHART('.m-chart')
+    new Statistical('.m-table-wrapper');
+    // new CHART();
 })
 
-class PRODUCT {
+class Statistical {
     constructor(className) {
         this.className = className;
 
@@ -18,14 +17,13 @@ class PRODUCT {
                             <th>
                                 <input type="checkbox" />
                             </th>
+                            <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
-                            <th>Miêu tả</th>
-                            <th>Số lượng</th>
-                            <th>Giá thành</th>
-                            <th>Chiêt khấu</th>
-                            <th>Chiêt khấu</th>
-                            <th>Nhãn hiệu</th>
-                            <th class="fixed-coloumn-last">Số sản phẩm đã bán</th>
+                            <th>Số lượng tồn kho</th>
+                            <th>Nhãn hàng</th>
+                            <th>Số lượng đã bán</th>
+                            <th>Giá bán</th>
+                            <th class="fixed-coloumn-last">Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,86 +33,107 @@ class PRODUCT {
             </div>
             <div class="m-table-footer">
                 <div>Tổng số: <span class="m-total-news">0</span> bản ghi</div>
-                <div></div>
+                <div>Tổng doanh thu: <span class="m-total-revenue">0</span> VND</div>
             </div>
         `)
-
+        const currentDate = new Date();
+        // const datetime={datetime:`${currentDate.getFullYear()}/${currentDate.getMonth()}/${currentDate.getDay()}`}
+        const datetime = { datetime: "2022/05/01" };
+        this.loadData(datetime);
+        this.handleAdd();
+        this.changeDateTime();
     }
-
-
-}
-
-class CHART {
-    constructor(className) {
-        this.className = className;
-        this.loadData();
+    changeDateTime() {
+        var that = this;
+        $('#bday-month').change(function (e) {
+            that.loadData({ datetime: e.target.value +"-01"});
+        })
     }
-
-    loadData(m){
+    loadData(datetime) {
+        console.log("Thay đổi ngày tháng thống kê", datetime)
         var that = this;
         $.ajax({
             type: "GET",
+            data: datetime,
             url: "./api/statistical/get-product-by-month.php",
-            data: {month:6},
-            
             success: function (response) {
-                
-                console.log(JSON.parse(response))
-                that.render(JSON.parse(response))
-            }   
-        });
-    }
-    render(response) {
-        const mLables =[];
-        const mData =[];
-        response.forEach(e => {
-            mLables.push(e.name);
-            mData.push(e.sold)
-        });
-        $(this.className).empty();
-        $(this.className).append(`
-            <canvas id="myChart" ></canvas>
-        `)
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: mLables,
-                datasets: [{
-                    label: 'Số Lượng Bán',
-                    data: mData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                // scales: {
-                //     y: {
-                //         beginAtZero: true
-                //     }
-                // }
+               
+                const datasource = JSON.parse(response);
+                that.render(datasource);
+
             }
         });
     }
 
+    /**@deprecated*/
+    handleAdd() {
+        //Them dong du lieu
+        $('.m-news-add-action').show();
+        $('.m-news-edit-action').hide();
+        // $('.add-new-employee').hide();
 
+    }
+
+    render(arr) {
+        let totalRevenue = 0;
+        arr.forEach(value=>{
+            const cur=totalRevenue + value.BillProductPrice*value.BillProductQuantity;
+            totalRevenue = totalRevenue + cur?cur:0;
+        });
+        $('.m-total-news').text(arr.length + "");
+        $('.m-total-revenue').text(totalRevenue);
+
+        $(`${this.className} tbody`).empty();
+
+        arr.forEach(e => {
+            //Thêm Một dòng mới
+
+            $(`${this.className} tbody`).append(`
+            <tr>
+                <td class= "fixed-coloumn-first">
+                    <input type="checkbox" />
+                    
+                </td>
+                <td >${e.ProductID}</td>
+                <td >${e.ProductName}</td>
+                <td >${e.ProductQuantity}</td>
+                <td >${e.ProductBrand}</td>
+                <td >${e.BillProductQuantity}</td>
+                <td >${e.BillProductPrice}</td>       
+                <td >
+                    <button class="m-news-edit-${e.id}">Xem</button>
+                   
+                </td>
+             </tr>`);
+
+
+
+            //Thêm sự kiện sửa dòng
+            $(`.m-news-edit-${e.id}`).click(function () {
+                $('.m-news-add-action').hide();
+                $('.m-news-edit-action').show();
+                let inputs = $(".m-dialogue [propName]")
+                for (let i = 0; i < inputs.length; i++) {
+                    const input = inputs[i];
+                    $(input).val(e[$(input).attr("propName")]);
+                }
+                $('.m-dialogue').show();
+
+            })
+        });
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
