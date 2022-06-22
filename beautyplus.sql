@@ -88,7 +88,7 @@ create table image(
 );
 
 create table cart(
-	user_id int not null,
+	user_id int not null ,
     product_id int not null,
     quantity int,
     primary key (user_id, product_id)

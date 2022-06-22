@@ -7,12 +7,13 @@ session_start(); ?>
 
 <head>
     <style>
-    .black-color{
-            color: black !important;
+        .black-color {
+            color: #9e5bab !important;
         }
-        .black-color:hover{
-            color:black !important;
-        } 
+
+        .black-color:hover {
+            color: green !important;
+        }
     </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -194,7 +195,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?= $row["id"] ?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -245,33 +246,38 @@ session_start(); ?>
                             $sql1 = "select * from cart inner join product where id=$ID";
                             $result1 = $conn->query($sql1);
                             $row1 = $result1->fetch_assoc();
-                            $ThanhTien = $row['quantity'] * $row1['price'];
+                            $ThanhTien = $row['quantity'] * $row['price'];
                             $sum += $ThanhTien;
                         ?>
-                            <form action="xoahang.php?id=<?= $row1['id'] ?>" method="POST">
-                                <div class="row item">
 
-                                    <div class="col l-4  m-4 s-8">
-                                        <div class="main__cart-product">
-                                            <img src="./assets/img/product/product2.jpg" alt="">
-                                            <div class="name"><a href="product.php?id=<?= $row1["id"] ?>"><?php echo $row1["name"] ?></a></div>
-                                        </div>
-                                    </div>
-                                    <div class="col l-2 m-2 s-0">
-                                        <div class="main__cart-price m-price"><?php echo number_format($row1["price"]) ?></div>
-                                    </div>
-                                    <div class="col l-2 m-2 s-0">
-                                        <div class="buttons_added">
-                                            <input class="minus is-form" type="button" value="-" onclick="minusProduct(<?=$index?>, <?= $row1['price']?>)">
-                                            
-                                            <input aria-label="quantity" class=<?php echo "input-qty-$index" ?> max="10" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
-                                            <input class="plus is-form" type="button" value="+" onclick="plusProduct(<?=$index?>,<?= $row1['price']?>)">
-                                        </div>
-                                    </div>
-                                    <div class="col l-2 m-2 s-4">
-                                        <div class="main__cart-price"> <span class=<?php echo "total-price-$index" ?>>  <?php echo  $row1['price']?> </span>  <span>đ</span></div>
-                                    </div>
+                            <div class="row item">
 
+                                <div class="col l-4  m-4 s-8">
+                                    <div class="main__cart-product">
+                                        <img src="./assets/img/product/product2.jpg" alt="">
+                                        <div class="name"><a href="product.php?id=<?= $row1["id"] ?>"><?php echo $row1["name"] ?></a></div>
+                                    </div>
+                                </div>
+                                <div class="col l-2 m-2 s-0">
+                                    <div class="main__cart-price m-price"><?php echo number_format($row["price"]) ?></div>
+                                </div>
+                                <div class="col l-2 m-2 s-0">
+                                    <div class="buttons_added">
+                                        <!-- <input class="minus is-form" type="button" value="-" onclick="minusProduct(<?= $index ?>, <?= $row1['price'] ?>)"> -->
+                                        <form action="giamsoluong.php?id=<?= $row1['id'] ?>" method="POST">
+                                            <button>-</button>
+                                        </form>
+                                        <input aria-label="quantity" max="<?= $row['quantity']?>" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
+                                        <!-- <input class="plus is-form" type="button" value="+" onclick="plusProduct(<?= $index ?>,<?= $row1['price'] ?>)"> -->
+                                        <form action="tangsoluong.php?id=<?= $row1['id'] ?>" method="POST">
+                                            <button>+</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col l-2 m-2 s-4">
+                                    <div class="main__cart-price">  <?php echo  number_format($ThanhTien) ?> <span>đ</span></div>
+                                </div>
+                                <form action="xoahang.php?id=<?= $row1['id'] ?>" method="POST">
                                     <div class="col l-1 m-1 s-0">
                                         <button>
                                             <span class="main__cart-icon">
@@ -279,12 +285,13 @@ session_start(); ?>
                                             </span>
                                         </button>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+
                         <?php } ?>
-                        <div class="btn btn--default">
+                        <!-- <div class="btn btn--default">
                             Cập nhật giỏ hàng
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col l-4 m-12 s-12">
@@ -315,7 +322,7 @@ session_start(); ?>
                         </div>
                         <!-- <div class="btn btn--default orange">Tiến hành thanh toán</div> -->
                         <form action="pay.php">
-                            <div class="btn btn--default"><button class="m-order-product">Đặt hàng</button></div>
+                            <div class="btn btn--default"><button class="m-order-product" style="background-color: #9e5bab; border: none;">Đặt hàng</button></div>
                         </form>
                         <div class="main__pay-title">Phiếu ưu đãi</div>
                         <input type="text" class="form-control">
@@ -430,7 +437,6 @@ session_start(); ?>
                 <div class="form-group">
                     <label for="account" class="form-label">Họ Tên</label>
                     <input id="account" name="account" type="text" class="form-control">
-                    <span class="form-message">Không hợp lệ !</span>
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Tài khoản Email *</label>
@@ -488,46 +494,46 @@ session_start(); ?>
 <script src="./assets/js/commonscript.js"></script>
 <script>
     let value = 1;
-    let maxProduct =10 ;
+    let maxProduct = 10;
 
-    function minusProduct(index,price) {
-        
+    function minusProduct(index, price) {
+
         if (value > 1) {
             value = isNaN(value) ? 1 : value;
             value--;
         }
 
-        document.querySelector(`.total-price-${index}`).innerHTML=(value*price)+"";
+        document.querySelector(`.total-price-${index}`).innerHTML = (value * price) + "";
         document.querySelector(`.input-qty-${index}`).value = value;
-        
+
     }
 
-    function plusProduct(index,price) {
-      
+    function plusProduct(index, price) {
+
         value = isNaN(value) ? 1 : value;
         value++;
         if (value > maxProduct) {
             value = maxProduct;
             alert('Số sản phẩm trong kho của shop đã đạt  giới hạn')
         }
-        document.querySelector(`.total-price-${index}`).innerHTML=(value*price)+"";
+        document.querySelector(`.total-price-${index}`).innerHTML = (value * price) + "";
         document.querySelector(`.input-qty-${index}`).value = value;
         // console.log(document.querySelector('.m-main-pay-1'))
         // // const element = document.querySelectorAll('.total-price');
         // console.log(element);
-        const total =callTotalPrice('.input-qty-2',".m-price");
+        const total = callTotalPrice('.input-qty-2', ".m-price");
         //console.log(total);
     }
 
-    function callTotalPrice(calssQuantity, classPrice){
+    function callTotalPrice(calssQuantity, classPrice) {
         const prices = $(classPrice);
         const quantitys = $(calssQuantity);
-        let total=0;
-        for(let i=0;i<prices.length;i++){
-          
-           const quantity = parseFloat( $(quantitys[i]).val());
-           const price =parseFloat($(prices[i]).text().replace(",",""));
-           console.log(quantity)
+        let total = 0;
+        for (let i = 0; i < prices.length; i++) {
+
+            const quantity = parseFloat($(quantitys[i]).val());
+            const price = parseFloat($(prices[i]).text().replace(",", ""));
+            console.log(quantity)
         }
         return total;
     }

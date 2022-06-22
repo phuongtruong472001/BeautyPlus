@@ -26,6 +26,15 @@ session_start(); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Owl caroucel Js-->
     <script src="./assets/owlCarousel/owl.carousel.min.js"></script>
+    <style>
+        .black-color {
+            color: #9e5bab !important;
+        }
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
 
 </head>
 
@@ -64,7 +73,7 @@ session_start(); ?>
                         $row = $result->fetch_assoc();
                     ?>
 
-                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
@@ -553,7 +562,6 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Họ Tên</label>
                                         <input id="account" name="txtFullname" type="text" class="form-control">
-                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Số điện thoại *</label>
@@ -563,7 +571,6 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Tài khoản</label>
                                         <input id="account" name="txtUsername" type="text" class="form-control">
-                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
 
                                     <div class="form-group">

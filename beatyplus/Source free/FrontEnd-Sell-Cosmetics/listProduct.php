@@ -23,12 +23,14 @@ session_start(); ?>
     <link rel="stylesheet" type="text/css" href="./assets/css/product.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/productSale.css">
     <style>
-    .black-color{
-            color: black !important;
+        .black-color {
+            color: #9e5bab !important;
         }
-        .black-color:hover{
-            color:black !important;
-        } </style>
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -419,7 +421,6 @@ session_start(); ?>
                 <div class="form-group">
                     <label for="account" class="form-label">Họ Tên</label>
                     <input id="account" name="account" type="text" class="form-control">
-                    <span class="form-message">Không hợp lệ !</span>
                 </div>
                 <div class="form-group">
                     <label for="password" class="form-label">Tài khoản Email *</label>

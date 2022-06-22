@@ -7,6 +7,15 @@ session_start();
 <!-- http://mauweb.monamedia.net/vanihome/ -->
 
 <head>
+    <style>
+        .black-color {
+            color: #9e5bab !important;
+        }
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,15 +40,7 @@ session_start();
     <script src="assets/owlCarousel/owl.carousel.min.js"></script>
 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
-    <style>
-        .black-color {
-            color: black;
-        }
-
-        .black-color:hover {
-            color: black !important;
-        }
-    </style>
+    
 
 </head>
 
@@ -304,7 +305,7 @@ session_start();
                             <?php if ((isset($_SESSION['username']) && $_SESSION['username'])) { ?>
                                 <form action="addProduct.php?id=<?= $row["id"] ?>" method="POST">
                                     <div class=" btn btn--default orange ">
-                                        <button class="va-add-to-cart"> Thêm vào giỏ</button>
+                                        <button class="va-add-to-cart" style="background-color: #d26e4b; border:none"> Thêm vào giỏ</button>
                                     </div>
                                 </form>
                             <?php } else { ?>
@@ -751,7 +752,6 @@ session_start();
                     <div class="form-group">
                         <label for="account" class="form-label">Họ Tên</label>
                         <input id="account" name="txtFullname" type="text" class="form-control">
-                        <span class="form-message">Không hợp lệ !</span>
                     </div>
                     <div class="form-group">
                         <label for="password" class="form-label">Số điện thoại *</label>
@@ -761,7 +761,6 @@ session_start();
                     <div class="form-group">
                         <label for="account" class="form-label">Tài khoản</label>
                         <input id="account" name="txtUsername" type="text" class="form-control">
-                        <span class="form-message">Không hợp lệ !</span>
                     </div>
 
                     <div class="form-group">
