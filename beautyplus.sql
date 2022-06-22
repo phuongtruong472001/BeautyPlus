@@ -43,6 +43,7 @@ create table product(
     disscount int,
 	brand varchar(100),
     category_id int,
+    status varchar(50),
     created datetime default current_timestamp,
     updated datetime default current_timestamp on update current_timestamp,
     unique(name),
