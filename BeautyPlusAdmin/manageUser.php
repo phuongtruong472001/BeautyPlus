@@ -102,7 +102,7 @@ include_once('connectDB.php');
                         <div class="add-emoloyee-form ui-draggable ui-draggable-handle" style="position: relative;">
                             <div class="m-form-header r-flex h-pointer">
                                 <div class="m-form-menu">
-                                    Thông tin bài viết
+                                    Thông tin tài khoản
                                 </div>
                                 <div class="m-form-close">
                                     <div class="md-close">
