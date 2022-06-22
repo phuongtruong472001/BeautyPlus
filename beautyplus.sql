@@ -43,6 +43,7 @@ create table product(
     disscount int,
 	brand varchar(100),
     category_id int,
+    status varchar(50),
     created datetime default current_timestamp,
     updated datetime default current_timestamp on update current_timestamp,
     unique(name),
@@ -54,7 +55,12 @@ create table bill(
     user_id int,
     created datetime default current_timestamp,
     total int,
-    status varchar(20),
+    status varchar(50),
+    name varchar(100) not null,
+    address varchar(200),
+    phone varchar(15),
+    email varchar(100),
+    note text,
     foreign key (user_id) references user(id) on delete set null
 );
 
@@ -62,7 +68,10 @@ create table bill_product(
 	bill_id int not null,
     product_id int not null,
     quantity int,
-    primary key (bill_id, product_id)
+    price int,
+    primary key (bill_id, product_id),
+    foreign key (bill_id) references bill(id),
+    foreign key (product_id) references product(id)
 );
 
 create table image(
@@ -79,7 +88,7 @@ create table image(
 );
 
 create table cart(
-	user_id int not null,
+	user_id int not null ,
     product_id int not null,
     quantity int,
     primary key (user_id, product_id)
