@@ -69,7 +69,9 @@ create table bill_product(
     product_id int not null,
     quantity int,
     price int,
-    primary key (bill_id, product_id)
+    primary key (bill_id, product_id),
+    foreign key (bill_id) references bill(id),
+    foreign key (product_id) references product(id)
 );
 
 create table image(

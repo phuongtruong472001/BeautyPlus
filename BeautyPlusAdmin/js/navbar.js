@@ -40,14 +40,6 @@ const data = [{
     title: "Thống kê",
     url:"statistical.php"
 },
-{
-    width: 14,
-    height: 17,
-    position: "-254px -1632px",
-    activePosition: "-254px -1589px",
-    title: "Quản lý hình ảnh",
-    url:"manageImage.php"
-},
     // {
     //     width: 18,
     //     height: 17,
