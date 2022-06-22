@@ -23,12 +23,14 @@ session_start(); ?>
     <link rel="stylesheet" type="text/css" href="./assets/css/product.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/productSale.css">
     <style>
-    .black-color{
-            color: black !important;
+        .black-color {
+            color: #9e5bab !important;
         }
-        .black-color:hover{
-            color:black !important;
-        } </style>
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
 </head>
 
 <body>

@@ -6,6 +6,15 @@ session_start(); ?>
 <!-- http://mauweb.monamedia.net/vanihome/ -->
 
 <head>
+    <style>
+        .black-color {
+            color: #9e5bab !important;
+        }
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,7 +102,8 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
+
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="#myedit">Sửa thông tin</a></div>
@@ -130,7 +140,7 @@ session_start(); ?>
                             <ul class="order__list">
                                 <?php
                                 include(".\assets\php\connect.php");
-                                
+
 
                                 $sql = "select * from cart where user_id=$user_id";
                                 $result = $conn->query($sql);
@@ -217,7 +227,7 @@ session_start(); ?>
                             while ($row = $result->fetch_assoc()) { ?>
 
                                 <li class="sub-nav__item">
-                                    <a href="listProduct.php?id=<?=$row["id"]?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
+                                    <a href="listProduct.php?id=<?= $row["id"] ?>" class="sub-nav__link"><?php echo $row["name"] ?></a>
                                 </li>
 
                             <?php } ?>
@@ -240,10 +250,15 @@ session_start(); ?>
                 <div class="col l-7 m-12 s-12">
                     <div class="pay-information">
                         <div class="pay__heading">Thông tin thanh toán</div>
+                        <?php
+                        $x = $_SESSION['username'];
+                        $sql = "select * from user where username= '$x'";
+                        $result = $conn->query($sql);
+                        $row = $result->fetch_assoc();
+                        ?>
                         <div class="form-group">
                             <label for="account" class="form-label">Họ Tên *</label>
-                            <input id="account" name="account" type="text" class="form-control">
-                            <span class="form-message">Không hợp lệ !</span>
+                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["fullname"] ?>">
                         </div>
                         <div class="form-group">
                             <label for="account" class="form-label">Địa chỉ *</label>
@@ -252,22 +267,22 @@ session_start(); ?>
                         </div>
                         <div class="form-group">
                             <label for="account" class="form-label">Tỉnh / Thành phố *</label>
-                            <input id="account" name="account" type="text" class="form-control">
+                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["address"] ?>">
                             <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                             <label for="account" class="form-label">Email *</label>
-                            <input id="account" name="account" type="text" class="form-control">
+                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["email"] ?>">
                             <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                             <label for="account" class="form-label">Số điện thoại *</label>
-                            <input id="account" name="account" type="text" class="form-control">
+                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["phone"] ?>">
                             <span class="form-message"></span>
                         </div>
                         <div class="form-group">
                             <label for="account" class="form-label">Ghi chú cho đơn hàng</label>
-                            <textarea class="form-control" name="" id="" cols="30" rows="20"></textarea>
+                            <textarea class="form-control" name="ghichu" id="" cols="30" rows="20"></textarea>
                         </div>
                     </div>
                 </div>
@@ -319,7 +334,7 @@ session_start(); ?>
                         </div>
                     </div>
 
-                    <div class="btn btn--default"><button class="dathang">Đặt hàng</button></div>
+                    <div class="btn btn--default"><button class="dathang" style="background-color: #9e5bab; border: none;">Đặt hàng</button></div>
 
                 </div>
 

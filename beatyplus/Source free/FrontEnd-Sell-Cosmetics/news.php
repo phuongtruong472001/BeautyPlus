@@ -6,14 +6,15 @@ session_start(); ?>
 <!-- http://mauweb.monamedia.net/vanihome/ -->
 
 <head>
-    <style>
-        .black-color{
-            color: black !important;
+<style>
+        .black-color {
+            color: #9e5bab !important;
         }
-        .black-color:hover{
-            color:black !important;
+
+        .black-color:hover {
+            color: green !important;
         }
-     </style>
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -223,13 +224,20 @@ session_start(); ?>
             <div class="list-new">
                 <?php
                 include(".\assets\php\connect.php");
-                $sql = "select * from news ";
+                $sql = "SELECT * FROM news ORDER BY created DESC";
                 $result = $conn->query($sql);
                 while ($row = $result->fetch_assoc()) {
+                    $ID=$row["id"];
                 ?>
                     <div href="#" class="new-item">
+                        <?php
+                        $sql2 = "select * from image where news_id=$ID ";
+                        $result2 = $conn->query($sql2);
+                        $row2 = $result2->fetch_assoc(); ?>
+                        
+                        
                         <a href="#" class="new-item__img">
-                            <img src="https://www.kosmebox.com/image/cache/data/BLOG/Nhung-item-makeup-nha-etude-house-gia-hat-de/Nhung-item-makeup-nha-etude-house-gia-hat-de-7-9-225x225.jpg" alt="">
+                            <img src="<?php echo $row2['link'] ?>" alt="">
                         </a>
                         <div class="new-item__body">
                             <a href="#" class="new-item__title">

@@ -26,6 +26,15 @@ session_start(); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Owl caroucel Js-->
     <script src="./assets/owlCarousel/owl.carousel.min.js"></script>
+    <style>
+        .black-color {
+            color: #9e5bab !important;
+        }
+
+        .black-color:hover {
+            color: green !important;
+        }
+    </style>
 
 </head>
 
@@ -63,8 +72,7 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-
-                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
+                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="suathongtincanhanform.php">Sửa thông tin</a></div>
@@ -604,12 +612,12 @@ session_start(); ?>
 
                                     <div class="form-group">
                                         <label for="password" class="form-label">Mật khẩu *</label>
-                                        <input id="password" name="txtPassword" type="text" class="form-control">
+                                        <input id="password" name="txtPassword" type="password" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Nhập lại mật khẩu *</label>
-                                        <input id="password" name="cfpassword" type="text" class="form-control">
+                                        <input id="password" name="cfpassword" type="password" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <button>Đăng Kí</button>
@@ -629,7 +637,7 @@ session_start(); ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Mật khẩu *</label>
-                                        <input id="password" name="txtPassword" type="text" class="form-control">
+                                        <input id="password" name="txtPassword" type="password" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <div class="authen__btns">

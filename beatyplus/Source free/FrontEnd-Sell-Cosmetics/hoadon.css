@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(140, 186, 202);
+    background-color: rgb(214, 188, 204);
   }
   .cart-container {
   
@@ -31,10 +31,13 @@ body{
     align-self: stretch;
     padding-left: 10px;
   }
+  .size-text{
+    font-size: 10px;
+  }
   
   .cart-description div:nth-child(2) {
     font-style: italic;
-    font-size: 12px;
+    font-size: 14px;
   }
   .cart-description-wrapper{
     display: flex;
@@ -45,7 +48,10 @@ body{
   .item-price{
     white-space: nowrap;
     margin-top:  20px;
-    font-size: 20px;
+    font-size: 17px;
+  }
+  .item-amount{
+    
   }
   .statistical{
     display: flex;
