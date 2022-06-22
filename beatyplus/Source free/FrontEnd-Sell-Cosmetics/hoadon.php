@@ -118,7 +118,7 @@ session_start(); ?>
                                     $sql1 = "select * from cart inner join product where id=$ID";
                                     $result1 = $conn->query($sql1);
                                     $row1 = $result1->fetch_assoc();
-                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $ThanhTien = $row['quantity'] * $row['price'];
                                     $sum += $ThanhTien;
                                 ?>
                                     <li class="item-order">
@@ -133,7 +133,7 @@ session_start(); ?>
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row["price"]) ?> ₫</div>
                                             </div>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
@@ -295,7 +295,7 @@ session_start(); ?>
                                     $sql2 = "select * from product where id=$id_product";
                                     $result2 = $conn->query($sql2);
                                     $row2 = $result2->fetch_assoc();
-                                    $thanhtien = $row1["quantity"] * $row2["price"];
+                                    $thanhtien = $row1["quantity"] * $row1["price"];
                                 ?>
 
                                     <div class="cart-content">
@@ -313,7 +313,6 @@ session_start(); ?>
                                                 <br>
                                                 <br>
                                                 <div class="size-text">Được đặt vào lúc <?php echo $row["created"] ?></div>
-                                                <a href="#">Xem chi tiết đơn hàng</a>
                                             </div>
 
                                             <div class="item-price"> Thành tiền : <?php echo number_format($thanhtien) ?> vnd
@@ -326,6 +325,12 @@ session_start(); ?>
                                 <?php } ?>
                             </div>
                             <div class="statistical">
+                                <p>Tên người nhận : <?php echo $row["name"] ?></p>
+                                <p>Địa chỉ : <?php echo $row["address"] ?></p>
+                                <p>Email : <?php echo $row["email"] ?></p>
+                                <p>Số Điện thoai : <?php echo $row["phone"] ?></p>
+                                <p>Ghi chú : <?php echo $row["note"] ?></p>
+
                                 <div class="size-text">Trạng thái đơn hàng : <?php echo $row["status"] ?></div>
                                 <div class="item-price">Tổng số Tiền: <?php echo number_format($row["total"]) ?> vnd</div>
                             </div>

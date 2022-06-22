@@ -118,7 +118,7 @@ session_start(); ?>
                                     $sql1 = "select * from cart inner join product where id=$ID";
                                     $result1 = $conn->query($sql1);
                                     $row1 = $result1->fetch_assoc();
-                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $ThanhTien = $row['quantity'] * $row['price'];
                                     $sum += $ThanhTien;
                                 ?>
                                     <li class="item-order">
@@ -133,7 +133,7 @@ session_start(); ?>
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row["price"]) ?> ₫</div>
                                             </div>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
@@ -254,7 +254,12 @@ session_start(); ?>
 
                                 <div class="col l-4  m-4 s-8">
                                     <div class="main__cart-product">
-                                        <img src="./assets/img/product/product2.jpg" alt="">
+                                        <?php
+                                        $sql2 = "select * from image where product_id=$ID ";
+                                        $result2 = $conn->query($sql2);
+                                        $row2 = $result2->fetch_assoc(); ?>
+                                        
+                                        <img src="<?php echo $row2['link'] ?>" alt="">
                                         <div class="name"><a href="product.php?id=<?= $row1["id"] ?>"><?php echo $row1["name"] ?></a></div>
                                     </div>
                                 </div>
@@ -267,7 +272,7 @@ session_start(); ?>
                                         <form action="giamsoluong.php?id=<?= $row1['id'] ?>" method="POST">
                                             <button>-</button>
                                         </form>
-                                        <input aria-label="quantity" max="<?= $row['quantity']?>" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
+                                        <input aria-label="quantity" max="<?= $row['quantity'] ?>" min="1" name="" type="number" value="<?php echo $row["quantity"] ?>">
                                         <!-- <input class="plus is-form" type="button" value="+" onclick="plusProduct(<?= $index ?>,<?= $row1['price'] ?>)"> -->
                                         <form action="tangsoluong.php?id=<?= $row1['id'] ?>" method="POST">
                                             <button>+</button>
@@ -275,7 +280,7 @@ session_start(); ?>
                                     </div>
                                 </div>
                                 <div class="col l-2 m-2 s-4">
-                                    <div class="main__cart-price">  <?php echo  number_format($ThanhTien) ?> <span>đ</span></div>
+                                    <div class="main__cart-price"> <?php echo  number_format($ThanhTien) ?> <span>đ</span></div>
                                 </div>
                                 <form action="xoahang.php?id=<?= $row1['id'] ?>" method="POST">
                                     <div class="col l-1 m-1 s-0">
@@ -324,9 +329,7 @@ session_start(); ?>
                         <form action="pay.php">
                             <div class="btn btn--default"><button class="m-order-product" style="background-color: #9e5bab; border: none;">Đặt hàng</button></div>
                         </form>
-                        <div class="main__pay-title">Phiếu ưu đãi</div>
-                        <input type="text" class="form-control">
-                        <div class="btn btn--default">Áp dụng</div>
+                        
                     </div>
                 </div>
             </div>
