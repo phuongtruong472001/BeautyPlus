@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
 include_once('connectDB.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">
@@ -72,7 +72,7 @@ include_once('connectDB.php');
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT * FROM product";
+                                $sql = "SELECT * FROM product ORDER BY id DESC";
                                 $result = $conn->query($sql);
                                 while ($row = $result->fetch_assoc()) {
                                     $temp = $row['category_id'];

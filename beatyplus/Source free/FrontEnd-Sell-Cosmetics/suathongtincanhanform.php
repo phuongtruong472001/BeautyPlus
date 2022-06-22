@@ -7,7 +7,7 @@ $rs = mysqli_query($conn, $sql);
 $r = mysqli_fetch_assoc($rs);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
   <meta charset="UTF-8">
