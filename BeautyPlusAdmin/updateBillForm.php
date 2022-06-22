@@ -86,10 +86,11 @@ include_once('connectDB.php');
                                     <div class="m-news-input">
                                         <label for="">trạng thái</label>
                                         <select name="status">
-                                            <option value="chua_gui" <?php if($status=="chua_gui") echo "selected" ?>>chưa gửi</option>
-                                            <option value="dang_giao_hang" <?php if($status=="dang_giao_hang") echo "selected" ?>>đang giao hàng</option>
-                                            <option value="da_thanh_toan" <?php if($status=="da_thanh_toan") echo "selected" ?>>đã thanh toán</option>
-                                            <option value="hoan_tra" <?php if($status=="hoan_tra") echo "selected" ?>>hoàn trả</option>
+                                            <option value="chưa xác nhận" <?php if($status=="chưa xác nhận") echo "selected" ?>>chưa xác nhận</option>
+                                            <option value="chưa gửi" <?php if($status=="chưa gửi") echo "selected" ?>>chưa gửi</option>
+                                            <option value="đang giao hàng" <?php if($status=="đang giao hàng") echo "selected" ?>>đang giao hàng</option>
+                                            <option value="đã thanh toán" <?php if($status=="đã thanh toán") echo "selected" ?>>đã thanh toán</option>
+                                            <option value="hoàn trả" <?php if($status=="hoàn trả") echo "selected" ?>>hoàn trả</option>
                                         </select>
                                     </div>
                                     
