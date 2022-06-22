@@ -43,6 +43,7 @@ create table product(
     disscount int,
 	brand varchar(100),
     category_id int,
+    status varchar(50),
     created datetime default current_timestamp,
     updated datetime default current_timestamp on update current_timestamp,
     unique(name),
@@ -68,7 +69,9 @@ create table bill_product(
     product_id int not null,
     quantity int,
     price int,
-    primary key (bill_id, product_id)
+    primary key (bill_id, product_id),
+    foreign key (bill_id) references bill(id),
+    foreign key (product_id) references product(id)
 );
 
 create table image(

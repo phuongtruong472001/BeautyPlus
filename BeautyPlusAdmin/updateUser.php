@@ -14,19 +14,29 @@
         $phone = $_POST['phone'];
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
-        
-        // insert data
-        $sql = "UPDATE user SET address='$address', phone='$phone', fullname='$fullname', email='$email' WHERE id=$id";
-        if($conn->query($sql)===TRUE){
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
+        if(strcmp($password, $confirmPassword) != 0){
             echo "<script>
-                alert(\"cập nhật thành công\");
+                alert(\"Lỗi: nhập lại mật khẩu không đúng\");
                 window.location = '././manageUser.php';
             </script>";
         }else{
-            echo "<script>
-                alert(\"Lỗi $conn->error\");
-                window.location = '././manageUser.php';
-            </script>";
+            // insert data
+            $sql = "UPDATE user SET address='$address', phone='$phone', fullname='$fullname', email='$email', password='$password' WHERE id=$id";
+            if($conn->query($sql)===TRUE){
+                echo "<script>
+                    alert(\"cập nhật thành công\");
+                    window.location = '././manageUser.php';
+                </script>";
+            }else{
+                echo "<script>
+                    alert(\"Lỗi $conn->error\");
+                    window.location = '././manageUser.php';
+                </script>";
+            }
         }
+        
+        
     }
 ?>
