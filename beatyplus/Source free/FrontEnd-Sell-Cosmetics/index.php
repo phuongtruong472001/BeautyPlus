@@ -1,7 +1,7 @@
 <?php
 session_start(); ?>
 <!DOCTYPE html>
-<html lang="vn">
+<html lang="en">
 <!-- https://cocoshop.vn/ -->
 <!-- http://mauweb.monamedia.net/vanihome/ -->
 
@@ -26,15 +26,6 @@ session_start(); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Owl caroucel Js-->
     <script src="./assets/owlCarousel/owl.carousel.min.js"></script>
-    <style>
-        .black-color {
-            color: #9e5bab !important;
-        }
-
-        .black-color:hover {
-            color: green !important;
-        }
-    </style>
 
 </head>
 
@@ -72,7 +63,8 @@ session_start(); ?>
                         $result = $conn->query($sql);
                         $row = $result->fetch_assoc();
                     ?>
-                        <div class="header__cart have black-color"><a class="footer__link black-color"><?php echo $row["fullname"] ?></a>
+
+                        <div class="header__cart have"><a class="footer__link"><?php echo $row["fullname"] ?></a>
                             <!-- --------------------menu doc----------------- -->
                             <div class="header__cart-wrap">
                                 <div class="total-money"><a href="suathongtincanhanform.php">Sửa thông tin</a></div>
@@ -270,7 +262,7 @@ session_start(); ?>
                 <!-- Tab items -->
                 <div class="tabs">
                     <div class="tab-item active">
-                        Bán Chạy
+                        Bán Nhiều Nhất
                     </div>
                 </div>
                 <!-- Tab content -->
@@ -279,7 +271,7 @@ session_start(); ?>
                         <div class="row">
                             <?php
                             include(".\assets\php\connect.php");
-                            $sql1 = " select * from product";
+                            $sql1 = " SELECT * from product ORDER BY sold DESC limit 5";
                             $result = $conn->query($sql1);
                             while ($row = $result->fetch_assoc()) {
                                 $ID = $row["id"];
@@ -597,6 +589,7 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Họ Tên</label>
                                         <input id="account" name="txtFullname" type="text" class="form-control">
+                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Số điện thoại *</label>
@@ -606,16 +599,17 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Tài khoản</label>
                                         <input id="account" name="txtUsername" type="text" class="form-control">
+                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="password" class="form-label">Mật khẩu *</label>
-                                        <input id="password" name="txtPassword" type="password" class="form-control">
+                                        <input id="password" name="txtPassword" type="text" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Nhập lại mật khẩu *</label>
-                                        <input id="password" name="cfpassword" type="password" class="form-control">
+                                        <input id="password" name="cfpassword" type="text" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <button>Đăng Kí</button>
@@ -635,7 +629,7 @@ session_start(); ?>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Mật khẩu *</label>
-                                        <input id="password" name="txtPassword" type="password" class="form-control">
+                                        <input id="password" name="txtPassword" type="text" class="form-control">
                                         <span class="form-message"></span>
                                     </div>
                                     <div class="authen__btns">

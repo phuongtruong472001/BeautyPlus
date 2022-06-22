@@ -6,6 +6,13 @@ $ID = $_GET["id"];
 $sql = "select * from product where id=$ID";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();
+if($row["quantity"]==0){
+	echo "<script>
+			alert(\"Sản phẩm đã hết hàng\");
+			window.location = '././product.php?id=$ID';
+		</script>";
+		return;
+}
 $name = $row['name'];
 $price = $row['price']*(100-$row["disscount"])/100;
 

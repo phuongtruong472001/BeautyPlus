@@ -129,7 +129,7 @@ session_start();
                                     $sql1 = "select * from cart inner join product where id=$ID";
                                     $result1 = $conn->query($sql1);
                                     $row1 = $result1->fetch_assoc();
-                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $ThanhTien = $row['quantity'] * $row['price'];
                                     $sum += $ThanhTien;
                                 ?>
                                     <li class="item-order">
@@ -144,7 +144,7 @@ session_start();
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row["price"]) ?> ₫</div>
                                             </div>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
@@ -237,7 +237,7 @@ session_start();
                         include(".\assets\php\connect.php");
 
                         $ID = $_GET["id"];
-                        $sql = "select * from product where ID=$ID";
+                        $sql = "select * from product where id=$ID";
                         $result = $conn->query($sql);
                         while ($row = $result->fetch_assoc()) { ?>
                             ?>
@@ -295,7 +295,7 @@ session_start();
                             <?php echo $row["name"] ?>
                         </h3>
                         <div class="productInfo__price">
-                            <?php echo number_format($row["price"]) ?> <span class="priceInfo__unit">đ</span>
+                            <?php echo number_format($row["price"]*(100-$row["disscount"])/100) ?> <span class="priceInfo__unit">đ</span>
                         </div>
                         <div class="productInfo__description">
                             <span><?php echo $row["name"] ?></span> <?php echo $row["description"] ?>
@@ -310,12 +310,9 @@ session_start();
                                 </form>
                             <?php } else { ?>
 
-                                <div class="buttons_added">
-                                    <input class="minus is-form" type="button" value="-" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                    <input aria-label="quantity" class="input-qty" max="10" min="1" name="quantity" type="number" value="1">
-                                    <input class="plus is-form" type="button" value="+" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                </div>
+                                
                                 <div class=" btn btn--default orange ">
+                                    
                                     <a href="#my-Login" class="sub-nav__link"> Thêm vào giỏ</a>
                                 </div>
 
@@ -756,7 +753,7 @@ session_start();
                     <div class="form-group">
                         <label for="password" class="form-label">Số điện thoại *</label>
                         <input id="password" name="txtPhone" type="text" class="form-control">
-                        <span class="form-message"></span>
+                        
                     </div>
                     <div class="form-group">
                         <label for="account" class="form-label">Tài khoản</label>
@@ -765,13 +762,13 @@ session_start();
 
                     <div class="form-group">
                         <label for="password" class="form-label">Mật khẩu *</label>
-                        <input id="password" name="txtPassword" type="text" class="form-control">
-                        <span class="form-message"></span>
+                        <input id="password" name="txtPassword" type="password" class="form-control">
+                        
                     </div>
                     <div class="form-group">
                         <label for="password" class="form-label">Nhập lại mật khẩu *</label>
-                        <input id="password" name="cfpassword" type="text" class="form-control">
-                        <span class="form-message"></span>
+                        <input id="password" name="cfpassword" type="password" class="form-control" >
+                        
                     </div>
                     <button>Đăng Kí</button>
 
@@ -786,12 +783,12 @@ session_start();
                     <div class="form-group">
                         <label for="account" class="form-label">Tài khoản *</label>
                         <input id="account" name="txtUsername" type="text" class="form-control">
-                        <span class="form-message">Tài khoản không chính xác !</span>
+                        
                     </div>
                     <div class="form-group">
                         <label for="password" class="form-label">Mật khẩu *</label>
-                        <input id="password" name="txtPassword" type="text" class="form-control">
-                        <span class="form-message"></span>
+                        <input id="password" name="txtPassword" type="password" class="form-control">
+                        
                     </div>
                     <div class="authen__btns">
                         <button name="login">

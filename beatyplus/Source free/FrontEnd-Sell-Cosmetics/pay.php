@@ -37,7 +37,7 @@ session_start(); ?>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Owl caroucel Js-->
     <script src="assets/owlCarousel/owl.carousel.min.js"></script>
-    <script>
+    <!-- <script>
         $(document).ready(function() {
 
             $(".dathang").click(function() {
@@ -49,12 +49,12 @@ session_start(); ?>
                 $('.m-dialouge-background').hide();
             });
         });
-    </script>
+    </script> -->
     <link rel="stylesheet" href="./dialouge.css">
 </head>
 
 <body>
-    <div class="m-dialouge-background" style="display: none;">
+    <!-- <div class="m-dialouge-background" style="display: none;">
         <div class="m-container">
             <div class="row">
                 <div class="modalbox success col-sm-8 col-md-6 col-lg-5 center animate">
@@ -62,18 +62,18 @@ session_start(); ?>
                         <span class="glyphicon glyphicon-ok"></span>
                     </div>
                     <!--/.icon-->
-                    <p>Bạn đã thanh toán thành công
-                    </p>
-                    <form action="xulythanhtoan.php" method="POST">
-                        <button type="submit" class="redo btn">Ok</button>
-                    </form>
-                </div>
-                <!--/.success-->
-            </div>
-            <!--/.row-->
-
-        </div>
+    <p>Bạn đã thanh toán thành công
+    </p>
+    <form action="xulythanhtoan.php" method="POST">
+        <button type="submit" class="redo btn">Ok</button>
+    </form>
     </div>
+    <!--/.success-->
+    </div>
+    <!--/.row-->
+
+    </div>
+    </div> -->
     <div class="header scrolling" id="myHeader">
         <div class="grid wide">
             <div class="header__top">
@@ -150,7 +150,7 @@ session_start(); ?>
                                     $sql1 = "select * from cart inner join product where id=$ID";
                                     $result1 = $conn->query($sql1);
                                     $row1 = $result1->fetch_assoc();
-                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $ThanhTien = $row['quantity'] * $row['price'];
                                     $sum += $ThanhTien;
                                 ?>
                                     <li class="item-order">
@@ -165,7 +165,7 @@ session_start(); ?>
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row["price"]) ?> ₫</div>
                                             </div>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
@@ -244,106 +244,98 @@ session_start(); ?>
             </ul>
         </div>
     </div>
-    <div class="main">
-        <div class="grid wide">
-            <div class="row">
-                <div class="col l-7 m-12 s-12">
-                    <div class="pay-information">
-                        <div class="pay__heading">Thông tin thanh toán</div>
-                        <?php
-                        $x = $_SESSION['username'];
-                        $sql = "select * from user where username= '$x'";
-                        $result = $conn->query($sql);
-                        $row = $result->fetch_assoc();
-                        ?>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Họ Tên *</label>
-                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["fullname"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Địa chỉ *</label>
-                            <input id="account" name="account" type="text" class="form-control">
-                            <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Tỉnh / Thành phố *</label>
-                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["address"] ?>">
-                            <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Email *</label>
-                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["email"] ?>">
-                            <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Số điện thoại *</label>
-                            <input id="account" name="account" type="text" class="form-control" value="<?php echo $row["phone"] ?>">
-                            <span class="form-message"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="account" class="form-label">Ghi chú cho đơn hàng</label>
-                            <textarea class="form-control" name="ghichu" id="" cols="30" rows="20"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="col l-5 m-12 s-12">
-                    <div class="pay-order">
-                        <div class="pay__heading">Đơn hàng của bạn</div>
-                        <?php
-                        include(".\assets\php\connect.php");
+    <form action="xulythanhtoan.php" method="POST">
+        <div class="main">
+            <div class="grid wide">
+                <div class="row">
 
-                        $sql = "select * from cart ";
-                        $result = $conn->query($sql);
-                        $sum = 0;
-                        while ($row = $result->fetch_assoc()) {
-                            $ID = $row['product_id'];
-                            $sql1 = "select * from cart inner join product where id=$ID";
-                            $result1 = $conn->query($sql1);
-                            $row1 = $result1->fetch_assoc();
-                            $ThanhTien = $row['quantity'] * $row1['price'];
-                            $sum += $ThanhTien;
-                        ?>
-                            <div class="pay-info">
-                                <div class="main__pay-text"><a class="order-main-name">
-                                        <?php echo $row1["name"] ?></a> </div>
-                                <div class="main__pay-amount">
-
-                                    <?php echo $row["quantity"] ?>
-                                </div>
-                                <div class="main__pay-price">
-                                    <?php echo number_format($row1["price"]) ?> ₫
-                                </div>
+                    <div class="col l-7 m-12 s-12">
+                        <div class="pay-information">
+                            <div class="pay__heading">Thông tin thanh toán</div>
+                            <?php
+                            $x = $_SESSION['username'];
+                            $sql = "select * from user where username= '$x'";
+                            $result = $conn->query($sql);
+                            $row = $result->fetch_assoc();
+                            ?>
+                            <div class="form-group">
+                                <label for="account" class="form-label">Họ Tên *</label>
+                                <input id="account" name="fullname" type="text" class="form-control" value="<?php echo $row["fullname"] ?>">
                             </div>
-                        <?php } ?>
+                            <div class="form-group">
+                                <label for="account" class="form-label">Địa chỉ *</label>
+                                <input id="account" name="address" type="text" class="form-control">
+                                <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="account" class="form-label">Email *</label>
+                                <input id="account" name="email" type="text" class="form-control" value="<?php echo $row["email"] ?>">
+                                <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="account" class="form-label">Số điện thoại *</label>
+                                <input id="account" name="phone" type="text" class="form-control" value="<?php echo $row["phone"] ?>">
+                                <span class="form-message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="account" class="form-label">Ghi chú cho đơn hàng</label>
+                                <textarea class="form-control" name="note" id="" cols="30" rows="20"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="pay-info">
-                        <div class="main__pay-text special">
-                            Giao hàng
+                    <div class="col l-5 m-12 s-12">
+
+                        <div class="pay-order">
+                            <div class="pay__heading">Đơn hàng của bạn</div>
+                            <?php
+                            include(".\assets\php\connect.php");
+                            $sql = "select * from cart ";
+                            $result = $conn->query($sql);
+                            $sum = 0;
+                            while ($row = $result->fetch_assoc()) {
+                                $ID = $row['product_id'];
+                                $sql1 = "select * from cart inner join product where id=$ID";
+                                $result1 = $conn->query($sql1);
+                                $row1 = $result1->fetch_assoc();
+                                $ThanhTien = $row['quantity'] * $row['price'];
+                                $sum += $ThanhTien;
+                            ?>
+                                <div class="pay-info">
+                                    <div class="main__pay-text"><a class="order-main-name">
+                                            <?php echo $row1["name"] ?></a> </div>
+                                    <div class="main__pay-amount">
+                                        <?php echo $row["quantity"] ?>
+                                    </div>
+                                    <div class="main__pay-price">
+                                        <?php echo number_format($row["price"]) ?> ₫
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
-                        <div class="main__pay-text">
-                            Giao hàng miễn phí
+                        <div class="pay-info">
+                            <div class="main__pay-text special">
+                                Giao hàng
+                            </div>
+                            <div class="main__pay-text">
+                                Giao hàng miễn phí
+                            </div>
                         </div>
+                        <div class="pay-info">
+                            <div class="main__pay-text special">
+                                Tổng thành tiền</div>
+                            <div class="main__pay-price">
+                                <?php echo number_format($sum) ?> ₫
+                            </div>
+                        </div>
+                        <div class="btn btn--default"><button name="dathang" type="submit" style="background-color: #9e5bab; border: none;">Đặt hàng</button></div>
 
                     </div>
-                    <div class="pay-info">
-                        <div class="main__pay-text special">
-                            Tổng thành tiền</div>
-                        <div class="main__pay-price">
-
-                            <?php echo number_format($sum) ?> ₫
-                        </div>
-                    </div>
-
-                    <div class="btn btn--default"><button class="dathang" style="background-color: #9e5bab; border: none;">Đặt hàng</button></div>
 
                 </div>
-
-
-
 
             </div>
         </div>
-    </div>
+    </form>
     </div>
     <div class="footer">
         <div class="grid wide">

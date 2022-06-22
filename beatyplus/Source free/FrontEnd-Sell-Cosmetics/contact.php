@@ -122,7 +122,7 @@ session_start(); ?>
                                     $sql1 = "select * from cart inner join product where id=$ID";
                                     $result1 = $conn->query($sql1);
                                     $row1 = $result1->fetch_assoc();
-                                    $ThanhTien = $row['quantity'] * $row1['price'];
+                                    $ThanhTien = $row['quantity'] * $row['price'];
                                     $sum += $ThanhTien;
                                 ?>
                                     <li class="item-order">
@@ -137,7 +137,7 @@ session_start(); ?>
                                             </a>
                                             <div class="order-main">
                                                 <a href="product.php?id=<?= $row1["id"] ?>" class="order-main-name"> <?php echo $row1["name"] ?></a>
-                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row1["price"]) ?> ₫</div>
+                                                <div class="order-main-price"><?php echo $row["quantity"] ?> x <?php echo number_format($row["price"]) ?> ₫</div>
                                             </div>
                                             <a href="product.php?id=<?= $row1["id"] ?>" class="order-close"><i class="far fa-times-circle"></i></a>
                                         </div>
