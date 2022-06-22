@@ -562,7 +562,6 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Họ Tên</label>
                                         <input id="account" name="txtFullname" type="text" class="form-control">
-                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="password" class="form-label">Số điện thoại *</label>
@@ -572,7 +571,6 @@ session_start(); ?>
                                     <div class="form-group">
                                         <label for="account" class="form-label">Tài khoản</label>
                                         <input id="account" name="txtUsername" type="text" class="form-control">
-                                        <span class="form-message">Không hợp lệ !</span>
                                     </div>
 
                                     <div class="form-group">
