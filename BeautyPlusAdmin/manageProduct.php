@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
 include_once('connectDB.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">
@@ -64,17 +64,25 @@ include_once('connectDB.php');
                                     <th>Đã bán</th>
                                     <th>khuyến mại(%)</th>
                                     <th>Thương hiệu</th>
+                                    <th>ảnh</th>
                                     <th>Mô tả</th>
+                                    <th>Trạng thái</th>
                                     <th class="fixed-coloumn-last">Chức năng</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT * FROM product";
+                                $sql = "SELECT * FROM product ORDER BY id DESC";
                                 $result = $conn->query($sql);
                                 while ($row = $result->fetch_assoc()) {
                                     $temp = $row['category_id'];
                                     $category_name = $conn->query("SELECT name FROM category WHERE id=$temp")->fetch_assoc()['name'];
+                                    $temp = $conn->query("SELECT link FROM image WHERE product_id=".$row['id']);
+                                    if($temp->num_rows > 0){
+                                        $link = $temp->fetch_assoc()['link'];
+                                    }else{
+                                        $link = "";
+                                    }
                                 ?>
                                     <tr>
                                         <td><?= $row['id'] ?></td>
@@ -85,10 +93,11 @@ include_once('connectDB.php');
                                         <td><?= $row['sold'] ?></td>
                                         <td><?= $row['disscount'] ?></td>
                                         <td><?= $row['brand'] ?></td>
+                                        <td><img src="<?=$link?>" alt="" width="100px" height="100px"></td>
                                         <td><?= $row['description'] ?></td>
+                                        <td><?= $row['status']?></td>
                                         <td>
                                             <a href="updateProductForm.php?id=<?=$row['id']?>">sửa</a>
-                                            <a href="deleteProduct.php?id=<?=$row['id']?>">xóa</a>
                                         </td>
                                     </tr>
                                 <?php
@@ -151,6 +160,10 @@ include_once('connectDB.php');
                                     <div class="m-news-input">
                                         <label for="">Mô tả</label>
                                         <input name="description" type="text">
+                                    </div>
+                                    <div class="m-news-input">
+                                        <label for="">link ảnh</label>
+                                        <input name="link" type="text">
                                     </div>
                                 </div>
                             </div>

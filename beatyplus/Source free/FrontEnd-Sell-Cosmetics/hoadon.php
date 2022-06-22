@@ -1,9 +1,7 @@
 <?php
 session_start(); ?>
 <!DOCTYPE html>
-<html lang="en">
-<!-- https://cocoshop.vn/ -->
-<!-- http://mauweb.monamedia.net/vanihome/ -->
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">

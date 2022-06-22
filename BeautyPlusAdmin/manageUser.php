@@ -7,7 +7,7 @@ if (!isset($_SESSION['username'])) {
 include_once('connectDB.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">
@@ -50,7 +50,6 @@ include_once('connectDB.php');
                 </div>
                 <div class="m-table-wrapper">
 
-
                     <div class="m-table-action">
                     </div>
                     <div class="m-table sticky-table">
@@ -70,7 +69,7 @@ include_once('connectDB.php');
                             </thead>
                             <tbody>
                                 <?php
-                                $sql = "SELECT * FROM user";
+                                $sql = "SELECT * FROM user ORDER BY id DESC";
                                 $result = $conn->query($sql);
                                 while ($row = $result->fetch_assoc()) {
                                 ?>
@@ -84,8 +83,8 @@ include_once('connectDB.php');
                                         <td><?= $row['phone'] ?></td>
                                         <td><?= $row['email'] ?></td>
                                         <td>
-                                            <a href="updateUserForm.php?id=<?= $row['id'] ?>">sửa</a>
-                                            <a href="deleteUser.php?id=<?= $row['id'] ?>">xóa</a>
+                                            <!-- <a href="updateUserForm.php?id=<?= $row['id'] ?>">sửa</a>
+                                            <a href="deleteUser.php?id=<?= $row['id'] ?>">xóa</a> -->
                                         </td>
                                     </tr>
                                 <?php
@@ -119,11 +118,11 @@ include_once('connectDB.php');
                                     </div>
                                     <div class="m-news-input">
                                         <label for="">Mật khẩu</label>
-                                        <input name="password" type="text" required>
+                                        <input name="password" type="password" required>
                                     </div>
                                     <div class="m-news-input">
                                         <label for="">Nhập lại mật khẩu</label>
-                                        <input name="confirmPassword" type="text" required>
+                                        <input name="confirmPassword" type="password" required>
                                     </div>
                                     <div class="m-news-input">
                                         <label for="">Họ tên</label>
@@ -139,7 +138,7 @@ include_once('connectDB.php');
                                     </div>
                                     <div class="m-news-input">
                                         <label for="">Email</label>
-                                        <input name="email" type="text">
+                                        <input name="email" type="email">
                                     </div>
                                 </div>
                             </div>

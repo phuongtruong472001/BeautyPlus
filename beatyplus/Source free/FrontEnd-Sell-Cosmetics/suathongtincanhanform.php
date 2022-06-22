@@ -7,9 +7,7 @@ $sql = "SELECT * FROM user WHERE username = '$username'";
 $rs = mysqli_query($conn, $sql);
 $r = mysqli_fetch_assoc($rs); ?>
 <!DOCTYPE html>
-<html lang="en">
-<!-- https://cocoshop.vn/ -->
-<!-- http://mauweb.monamedia.net/vanihome/ -->
+<html lang="vn">
 
 <head>
   <meta charset="UTF-8">

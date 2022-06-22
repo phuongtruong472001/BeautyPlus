@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">
@@ -13,10 +13,17 @@
     <script src="./js/statistical.js"></script>
     <script src="./js/dialouge.js"> </script>
     <script src="./index.js"></script>
-    <script src="./lib/chart.js"></script>
+    <style>
+        .m-table-footer{
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 
 <body>
+    
     <div class="container">
         <div class="navbar stick-navbar">
             <div class="m-logo">
@@ -30,7 +37,7 @@
             </div>
         </div>
         <div class="main">
-            <div class="header">
+            <!-- <div class="header">
                 <div class="h-bars">
                     <div></div>
                 </div>
@@ -67,23 +74,71 @@
                 <div></div>
                 <div></div>
                 <div></div>
-            </div>
+            </div> -->
+          
+            <?php include('header.php') ?>
             <div>
 
             </div>
             <div class="content">
                 <div class="title-distance">
-                    <div class="title">Sản Phẩm  Bán Chạy Trong Tháng</div>
+                    <div class="title">Thống kê  sản phẩm đã bán trong tháng</div>
                     <div class="add-new-employee">
-                    
+                        <input id="bday-month" type="month" name="bday-month">
                     </div>
                 </div>
-                <div class="m-table-product-wrapper m-table-wrapper">
+                <div class="m-table-wrapper">
 
                 </div>
 
-                <div class="m-chart"></div>
-           
+                <!-- form them bai viet -->
+                <div class="m-dialogue">
+                    <div class="add-emoloyee-form">
+                        <div class="m-form-header r-flex h-pointer">
+                            <div class="m-form-menu">
+                                Thông tin bài viết
+                            </div>
+                            <div class="m-form-close">
+                                <div class="md-help">
+                                    <div class="md-help-icon"></div>
+                                </div>
+                                <div class="md-close">
+                                    <div class="md-close-icon"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-form-content">
+                            <div>
+                                <div class="m-news-input">
+                                    <label for="">Tiêu đề bài viết</label>
+                                    <input propName="title" type="text">
+                                </div>
+                                <div class="m-news-input">
+                                    <label for="">Tác giả</label>
+                                    <input propName="author" type="text">
+                                </div>
+                            </div>
+                            <div class="m-news-input">
+                                <label for="">Nội dung bài viết</label>
+                                <textarea propName="content"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="m-form-action">
+                            <div>
+                                <button class="m-news-cancel">Huỷ</button>
+                            </div>
+                            <div class="m-news-add-action">
+                                <button class="m-news-save">Thêm</button>
+                                <button class="m-news-save-and-add">Lưu và thêm</button>
+
+                            </div>
+                            <div class="m-news-edit-action">
+                                <button class="m-news-update">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 

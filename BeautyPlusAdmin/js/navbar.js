@@ -45,8 +45,8 @@ const data = [{
     height: 17,
     position: "-254px -1632px",
     activePosition: "-254px -1589px",
-    title: "Quản lý hình ảnh",
-    url:"manageImage.php"
+    title: "Quản lý hóa đơn",
+    url:"manageBill.php"
 },
     // {
     //     width: 18,
