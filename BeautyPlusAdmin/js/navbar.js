@@ -40,16 +40,14 @@ const data = [{
     title: "Thống kê",
     url:"statistical.php"
 },
-<<<<<<< HEAD
 {
     width: 14,
     height: 17,
     position: "-254px -1632px",
     activePosition: "-254px -1589px",
-    title: "Quản lý hình ảnh",
-    url:"manageImage.php"
-},];
-=======
+    title: "Quản lý hóa đơn",
+    url:"manageBill.php"
+},
     // {
     //     width: 18,
     //     height: 17,
@@ -115,7 +113,6 @@ const data = [{
     // }
 
 ];
->>>>>>> 60f57a80128f710c3e06f7d69b29701f48d932bd
 const className = ".navbar .menu-item-list";
 $(window).on('load', function (e) {
     const navbar = new NabBar(data, className)

@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
 include_once('connectDB.php');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vn">
 
 <head>
     <meta charset="UTF-8">
