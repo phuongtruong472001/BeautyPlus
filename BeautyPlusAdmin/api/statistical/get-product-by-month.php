@@ -10,11 +10,15 @@
         die("ket noi that bai".$conn->connect_error);
     }
 
-    $month=$_GET['month'];
-    $sql = "SELECT * FROM product 
-        WHERE $month=MONTH(updated) 
-        ORDER BY sold";
+    $datetime=$_GET['datetime'];
+    
+    $sql = "SELECT p.id AS ProductID, p.name AS ProductName, p.quantity AS ProductQuantity ,p.brand AS ProductBrand ,
+            bp.quantity AS BillProductQuantity, bp.price AS BillProductPrice 
+    FROM  bill b INNER JOIN bill_product bp ON b.id= bp.bill_id  INNER  JOIN product p ON P.id = bp.product_id 
+    WHERE MONTH(b.created)  =MONTH('$datetime') AND YEAR(b.created) = YEAR('$datetime')";
 
+   
+   
     $rs = mysqli_query($con,$sql);
 
     $response = array();
