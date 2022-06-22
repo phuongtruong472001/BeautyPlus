@@ -37,8 +37,8 @@ class Statistical {
             </div>
         `)
         const currentDate = new Date();
-        // const datetime={datetime:`${currentDate.getFullYear()}/${currentDate.getMonth()}/${currentDate.getDay()}`}
-        const datetime = { datetime: "2022/05/01" };
+        const datetime={datetime:`${currentDate.getFullYear()}/${currentDate.getMonth()+1}/${currentDate.getDay()}`}
+        $("#bday-month").val(`${currentDate.getFullYear()}-0${currentDate.getMonth()+1}`)
         this.loadData(datetime);
         this.handleAdd();
         this.changeDateTime();
